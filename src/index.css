@@ -113,3 +113,29 @@ html {
 
   font-size: 20px; /* change this to change the size*/
 }
+
+.copyrightSymbol {
+  font-family: "Fira Code", monospace;
+  position: relative;
+  color: #676e77;
+  top: -0.5rem;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-family: "Orbitron", "Exo 2", sans-serif;
+}
+
+.copyrightText {
+  color: #676e77;
+  font-family: "Fira Code", monospace;
+  text-align: center;
+}
+
+.logos {
+  font-size: 35px;
+}
+
+.contactLinksBox {
+  font-size: 1.5rem;
+}
