@@ -139,3 +139,12 @@ html {
 .contactLinksBox {
   font-size: 1.5rem;
 }
+
+.heroText {
+  color: #676e77;
+  font-family: "Fira Code", monospace;
+}
+
+.dynamicText {
+  color: #2b4c5d;
+}
