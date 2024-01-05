@@ -134,6 +134,11 @@ html {
 
 .logos {
   font-size: 35px;
+  transition: transform 0.25s;
+}
+
+.logos:hover {
+  transform: scale(1.25);
 }
 
 .contactLinksBox {
@@ -147,4 +152,9 @@ html {
 
 .dynamicText {
   color: #2b4c5d;
+}
+
+.heroContainer {
+  display: flex;
+  text-align: center;
 }

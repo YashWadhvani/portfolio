@@ -55,7 +55,12 @@ export default function Footer() {
             className="socials"
             target="blank"
           >
-            <img src={Instagram} alt="" className="mx-2" height={"35px"} />
+            <img
+              src={Instagram}
+              alt=""
+              className="logos mx-2"
+              height={"35px"}
+            />
           </a>
         </Container>
 
