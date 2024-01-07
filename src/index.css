@@ -53,14 +53,18 @@ html {
 }
 
 .nav-link:hover {
-  color: #676e77;
+  /* color: #d3e5f1; */
+  color: #4b8ab6;
+  /* color: #676e77; */
   transform: scale(1.1);
 }
 
 .hover-underline-animation {
   display: inline-block;
   position: relative;
-  color: #676e77;
+  /* color: #676e77; */
+  /* color: #d3e5f1; */
+  color: #4b8ab6;
 }
 
 .hover-underline-animation::after {
@@ -87,6 +91,8 @@ html {
 }
 
 .brandText {
+  /* color: #d3e5f1; */
+  /* color: #4b8ab6; */
   color: #676e77;
   font-family: "Silkscreen", sans-serif;
   font-size: 1.25rem;
@@ -151,7 +157,9 @@ html {
 }
 
 .dynamicText {
-  color: #2b4c5d;
+  /* color: #d3e5f1; */
+  color: #4b8ab6;
+  /* color: #2b4c5d; */
 }
 
 .heroContainer {
