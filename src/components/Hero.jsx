@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import Typewriter from "typewriter-effect";
-import Desk from "../assets/desk.png";
+import Desk from "../assets/desk4.png";
 
 export default function Hero() {
   return (
@@ -29,7 +29,7 @@ export default function Hero() {
           </h4>
         </Container>
         <Container className="heroImgCon">
-          <img src={Desk} alt="" width={"450px"} height={"450px"} />
+          <img src={Desk} alt="" width={"550px"} height={"450px"} />
         </Container>
       </Container>
     </>
