@@ -17,7 +17,7 @@ export default function NavBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link
-                href="#home"
+                href="/"
                 className="darkBgText hover-underline-animation"
               >
                 Home

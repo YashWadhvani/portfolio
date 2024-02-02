@@ -166,3 +166,14 @@ html {
   display: flex;
   text-align: center;
 }
+
+.downloadResumeButton {
+  background-color: transparent;
+  border-color: #4b8ab6;
+  color: #4b8ab6;
+}
+
+.downloadResumeButton:hover {
+  background-color: #4b8ab6;
+  border-color: #4b8ab6;
+}
