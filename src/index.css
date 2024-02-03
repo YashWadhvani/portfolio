@@ -14,11 +14,11 @@ font-family: 'Silkscreen', sans-serif;*/
 body,
 html {
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .bg {
-  background-image: url("../public/assets/bg.png");
+  background-image: url("../public/assets/background.png");
   height: 100%;
   background-position: top;
   background-repeat: no-repeat;
@@ -32,7 +32,7 @@ html {
 .darkBgText {
   color: #676e77;
   margin: 0 1rem;
-  font-family: "Silkscreen";
+  font-family: "Fira Code";
 }
 .darkBgBranding {
   font-size: 1.5rem;
@@ -53,17 +53,13 @@ html {
 }
 
 .nav-link:hover {
-  /* color: #d3e5f1; */
   color: #4b8ab6;
-  /* color: #676e77; */
   transform: scale(1.1);
 }
 
 .hover-underline-animation {
   display: inline-block;
   position: relative;
-  /* color: #676e77; */
-  /* color: #d3e5f1; */
   color: #4b8ab6;
 }
 
@@ -75,6 +71,7 @@ html {
   height: 2px;
   bottom: 0;
   left: 0;
+  /* background-color: #4b8ab6; */
   background-color: #676e77;
   transform-origin: bottom;
   transition: transform 0.25s ease-in-out;
@@ -91,8 +88,6 @@ html {
 }
 
 .brandText {
-  /* color: #d3e5f1; */
-  /* color: #4b8ab6; */
   color: #676e77;
   font-family: "Silkscreen", sans-serif;
   font-size: 1.25rem;
@@ -157,9 +152,7 @@ html {
 }
 
 .dynamicText {
-  /* color: #d3e5f1; */
   color: #4b8ab6;
-  /* color: #2b4c5d; */
 }
 
 .heroContainer {
@@ -171,9 +164,86 @@ html {
   background-color: transparent;
   border-color: #4b8ab6;
   color: #4b8ab6;
+  transition: all 0.3 ease;
 }
 
 .downloadResumeButton:hover {
   background-color: #4b8ab6;
   border-color: #4b8ab6;
+  color: #fff;
+}
+
+.RepoCard {
+  display: flex;
+  flex-direction: column;
+  border-color: #676e77;
+  width: 350px;
+  height: 275px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.RepoCards {
+  font-family: Arial, sans-serif;
+  width: max-content;
+  padding: 20px;
+  margin-left: 8.5rem;
+}
+
+.repository-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.github-repo-card {
+  border: 1px solid #4b8ab6;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  padding: 16px;
+  justify-content: space-between;
+}
+
+.github-repo-card h2 {
+  align-content: flex-start;
+  color: #4b8ab6;
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.github-repo-card p {
+  margin-bottom: 8px;
+  color: #586069;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+}
+
+.details span {
+  font-size: 14px;
+  color: #586069;
+  margin-right: 16px;
+}
+
+.VoGButton {
+  max-width: fit-content;
+  align-self: center;
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #4b8ab6;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 2px solid #4b8ab6;
+  transition: all 0.3s ease;
+  margin-top: 50px;
+}
+
+.VoGButton:hover {
+  background-color: #4b8ab6;
+  color: #fff;
 }

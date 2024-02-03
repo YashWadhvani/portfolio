@@ -1,5 +1,6 @@
 // import logo from "./logo.svg";
 import "./App.css";
+import FeaturedProjects from "./components/FeaturedProjects";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 // import { Container } from "react-bootstrap";
@@ -10,6 +11,7 @@ function App() {
     <>
       <NavBar />
       <Hero />
+      <FeaturedProjects />
       <Footer />
     </>
   );
