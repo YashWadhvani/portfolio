@@ -192,9 +192,12 @@ html {
   margin-left: 8.5rem;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .heroImgCon {
-    visibility: hidden;
+    display: none;
+  }
+  .heroTextCon {
+    flex-basis: 100%;
   }
 }
 
