@@ -201,7 +201,7 @@ html {
   }
 } */
 
-@media (max-width: 770px) {
+@media (max-width: 768px) {
   body,
   html {
     overflow-x: hidden;
@@ -209,30 +209,35 @@ html {
 
   .darkBgBranding {
     font-size: 0.5rem;
-    margin-left: 0;
+    margin: auto 0;
   }
   .darkBgBranding > img {
     width: 1.5rem;
     height: 1.5rem;
   }
 
+  .navbar-toggler {
+    margin-right: 15px;
+  }
+
   .heroImgCon {
     display: none;
   }
   .heroContainer {
-    margin-top: 2rem;
+    margin-top: 50%;
   }
   .heroTextCon {
+    margin-top: 2.5rem !important;
     flex-basis: 100%;
   }
   .RepoCards {
-    /* left: 50%; */
-    /* top: 50%; */
-    transform: translate(0%, 5%);
+    margin-left: auto;
   }
 
   .RepoCard {
     width: 300px;
+    margin-left: auto;
+    height: fit-content;
   }
 }
 
