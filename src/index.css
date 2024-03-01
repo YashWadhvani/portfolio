@@ -228,7 +228,7 @@ html {
   .RepoCards {
     /* left: 50%; */
     /* top: 50%; */
-    transform: translate(5%, 5%);
+    transform: translate(0%, 5%);
   }
 
   .RepoCard {
