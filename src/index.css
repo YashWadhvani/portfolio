@@ -209,7 +209,7 @@ html {
 
   .darkBgBranding {
     font-size: 0.5rem;
-    margin: auto 0;
+    margin-left: auto;
   }
   .darkBgBranding > img {
     width: 1.5rem;
@@ -217,9 +217,9 @@ html {
     /* display: none; */
   }
 
-  .brandImg {
+  /* .brandImg {
     display: none !important;
-  }
+  } */
 
   .navbar-toggler {
     margin-right: 15px;
