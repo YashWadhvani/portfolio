@@ -202,6 +202,11 @@ html {
 } */
 
 @media (max-width: 770px) {
+  body,
+  html {
+    overflow-x: hidden;
+  }
+
   .heroImgCon {
     display: none;
   }
