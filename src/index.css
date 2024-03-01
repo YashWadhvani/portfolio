@@ -192,6 +192,22 @@ html {
   margin-left: 8.5rem;
 }
 
+@media (max-width: 576px) {
+  .heroImgCon {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 770px) {
+  .RepoCards {
+    margin-left: 2.5rem;
+  }
+
+  .RepoCard {
+    width: 300px;
+  }
+}
+
 .repository-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

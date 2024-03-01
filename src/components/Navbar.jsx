@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <>
       <Container className="navContainer">
-        <Navbar expand="lg" className="darkBg navbar-dark mx-2">
+        <Navbar expand="lg" className="darkBg navbar-dark mx-2 fixed-top">
           <Container className="darkBgBranding mx-auto">
             <Image src={incognito} className="brandImg d-inline" />
             <Navbar.Brand href="#home" className="darkBgText">
