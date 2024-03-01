@@ -214,7 +214,11 @@ html {
   .darkBgBranding > img {
     width: 1.5rem;
     height: 1.5rem;
-    display: none;
+    /* display: none; */
+  }
+
+  .brandImg {
+    display: none !important;
   }
 
   .navbar-toggler {
