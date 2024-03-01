@@ -30,6 +30,10 @@ html {
   background-color: transparent;
 }
 
+.darkNav {
+  background-color: rgba(31, 31, 31, 0.9);
+}
+
 .darkBgText {
   color: #676e77;
   margin: 0 1rem;
@@ -214,12 +218,16 @@ html {
   .darkBgBranding > img {
     width: 1.5rem;
     height: 1.5rem;
-    /* display: none; */
+    display: contents;
   }
 
   /* .brandImg {
     display: none !important;
   } */
+
+  .navbar-nav {
+    align-items: center;
+  }
 
   .navbar-toggler {
     margin-right: 15px;
