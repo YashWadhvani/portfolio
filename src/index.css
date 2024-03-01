@@ -192,16 +192,22 @@ html {
   margin-left: 8.5rem;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .heroImgCon {
     display: none;
   }
   .heroTextCon {
     flex-basis: 100%;
   }
-}
+} */
 
 @media (max-width: 770px) {
+  .heroImgCon {
+    display: none;
+  }
+  .heroTextCon {
+    flex-basis: 100%;
+  }
   .RepoCards {
     margin-left: 2.5rem;
   }
