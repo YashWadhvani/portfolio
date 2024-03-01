@@ -207,10 +207,19 @@ html {
     overflow-x: hidden;
   }
 
+  .darkBgBranding {
+    font-size: 1.2rem;
+  }
+  .darkBgBranding > img {
+    width: 2rem;
+    height: 2rem;
+  }
+
   .heroImgCon {
     display: none;
   }
   .heroTextCon {
+    margin-top: auto;
     flex-basis: 100%;
   }
   .RepoCards {
