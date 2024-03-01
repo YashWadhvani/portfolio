@@ -208,7 +208,7 @@ html {
   }
 
   .darkBgBranding {
-    font-size: 1rem;
+    font-size: 0.5rem;
     margin-left: 0;
   }
   .darkBgBranding > img {
@@ -224,7 +224,7 @@ html {
     flex-basis: 100%;
   }
   .RepoCards {
-    left: 50%;
+    /* left: 50%; */
     top: 50%;
     transform: translate(50%, 50%);
   }
