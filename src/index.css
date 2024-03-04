@@ -213,7 +213,7 @@ html {
 
   .darkBgBranding {
     font-size: 0.5rem;
-    margin-left: 0 !important;
+    /* margin-left: 0 !important; */
     display: contents;
   }
   .darkBgBranding > img {
