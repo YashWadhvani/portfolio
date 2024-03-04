@@ -9,7 +9,7 @@ export default function NavBar() {
         <Navbar expand="lg" className="darkNav navbar-dark mx-5 fixed-top">
           <Container className="darkBgBranding mx-auto">
             <Image src={incognito} className="brandImg d-inline" />
-            <Navbar.Brand href="#home" className="darkBgText">
+            <Navbar.Brand href="#home" className="darkNavText">
               <p className="d-inline brandText">&lt; Yash Wadhvani &gt;</p>
             </Navbar.Brand>
           </Container>

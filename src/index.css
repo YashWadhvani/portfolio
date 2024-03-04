@@ -216,16 +216,21 @@ html {
   }
 
   .darkBgBranding {
-    font-size: 0 !important;
+    /* font-size: 0 !important; */
     margin-left: 0 !important;
     padding-left: 0%;
     margin-right: 50px !important;
     display: contents;
   }
+
+  .brandText {
+    font-size: 1.1rem !important;
+  }
+
   .darkBgBranding > img {
     width: 1.5rem;
     height: 1.5rem;
-    /* display: none !important; */
+    display: none !important;
   }
 
   /* .brandImg {
