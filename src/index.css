@@ -216,7 +216,7 @@ html {
   }
 
   .darkBgBranding {
-    font-size: 0.25rem !important;
+    font-size: 0 !important;
     margin-left: 0 !important;
     padding-left: 0%;
     margin-right: 50px !important;
@@ -225,7 +225,7 @@ html {
   .darkBgBranding > img {
     width: 1.5rem;
     height: 1.5rem;
-    display: none !important;
+    /* display: none !important; */
   }
 
   /* .brandImg {
