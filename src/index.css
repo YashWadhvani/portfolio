@@ -211,6 +211,10 @@ html {
     overflow-x: hidden;
   }
 
+  .darkNav {
+    margin: 0;
+  }
+
   .darkBgBranding {
     font-size: 0.5rem;
     /* margin-left: 0 !important; */
