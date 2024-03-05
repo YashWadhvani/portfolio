@@ -241,9 +241,9 @@ html {
     align-items: center;
   }
 
-  .navbar-toggler {
+  /* .navbar-toggler {
     margin-right: 60px;
-  }
+  } */
 
   .heroImgCon {
     display: none;
