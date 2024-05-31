@@ -23,19 +23,19 @@ export default function NavBar() {
                 Home
               </Nav.Link>
               <Nav.Link
-                href="#about"
+                href="/about"
                 className="darkBgText hover-underline-animation"
               >
                 About Me
               </Nav.Link>
               <Nav.Link
-                href="#projects"
+                href="/projects"
                 className="darkBgText hover-underline-animation"
               >
                 Projects
               </Nav.Link>
               <Nav.Link
-                href="#contact"
+                href="/contact"
                 className="darkBgText hover-underline-animation"
               >
                 Contact Me
