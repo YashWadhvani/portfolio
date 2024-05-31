@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
+import { FaArrowRight } from "react-icons/fa6";
 
 const GitHubRepoCard = ({ repo }) => {
   return (
@@ -38,11 +39,11 @@ export default function FeaturedProjects(props) {
         const data = await response.json();
         const featured = [
           "code_snippet_library",
-          "wastelessbites",
+          // "wastelessbites",
           "Philmy-Shit",
           "store-management-system",
-          "library-management-system",
-          "Ukiyo-Live-In-The-Moment",
+          // "library-management-system",
+          // "Ukiyo-Live-In-The-Moment",
         ];
         const repos = [];
         for (let i = 0; i < 10; i++) {
@@ -67,6 +68,14 @@ export default function FeaturedProjects(props) {
             <GitHubRepoCard key={repo.id} repo={repo} />
           ))}
         </Container>
+      </Container>
+      <Container className="viewAll text-center">
+        <Button className="VoGButton mt-0 mb-3" href="/projects">
+          View All Projects
+          <FaArrowRight
+            style={{ marginLeft: "10px", marginTop: "-3px", height: "1.5em" }}
+          />
+        </Button>
       </Container>
     </>
   );

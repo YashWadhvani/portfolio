@@ -3,6 +3,7 @@ import { Container, Button } from "react-bootstrap";
 import Typewriter from "typewriter-effect";
 import HeroImage from "../assets/Code typing-bro.png";
 import Resume from "../assets/YashWadhvani_Resume.pdf";
+import { FaDownload } from "react-icons/fa6";
 
 export default function Hero() {
   return (
@@ -34,7 +35,8 @@ export default function Hero() {
             target="_blank"
             download="YashWadhvani_Resume"
           >
-            Download Resume
+            Download Resume{" "}
+            <FaDownload style={{ marginTop: "-5px", marginLeft: "5px" }} />
           </Button>
         </Container>
         <Container className="heroImgCon px-0">
