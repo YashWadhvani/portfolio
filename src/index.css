@@ -278,6 +278,7 @@ html {
   margin-bottom: 16px;
   padding: 16px;
   justify-content: space-between;
+  color: #4b8ab6;
 }
 
 .github-repo-card h2 {
@@ -321,4 +322,5 @@ html {
 .VoGButton:hover {
   background-color: #4b8ab6;
   color: #fff;
+  border: 2px solid #4b8ab6;
 }
