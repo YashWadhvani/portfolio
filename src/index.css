@@ -453,10 +453,16 @@ html {
     width: 100%;
   }
 }
+@media (max-width: 400px) {
+  .eduQuali {
+    margin-left: -1.25rem;
+    text-align: center;
+  }
+}
 @media (max-width: 768px) {
   .eduQuali {
-    margin-left: -2.75rem;
-    font-size: 2.25;
+    text-align: center;
+    font-size: 2.25rem;
   }
 
   .hiddenBreak {
@@ -496,8 +502,15 @@ html {
   }
   .timeline ul li:nth-child(odd) .time,
   .timeline ul li:nth-child(even) .time {
-    top: -30px;
+    top: -2rem;
     left: 50px;
     right: inherit;
+  }
+
+  .timeline ul li:first-child .time {
+    top: -1.5rem;
+  }
+  .timeline ul li:first-child .content {
+    margin-top: 0.2rem;
   }
 }
