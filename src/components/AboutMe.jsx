@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import YashImg from "../assets/YashBlob1.png";
+import YashImg from "../assets/YashBlob3.png";
 
 export default function AboutMe() {
   return (
