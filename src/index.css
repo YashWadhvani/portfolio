@@ -364,6 +364,7 @@ html {
   clear: both;
 }
 .content {
+  word-wrap: normal;
   padding-bottom: 20px;
 }
 .timeline ul li:nth-child(odd):before {
