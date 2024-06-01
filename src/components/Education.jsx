@@ -9,7 +9,9 @@ export default function Education() {
   return (
     <>
       <Container className="heroText" style={{ width: "max-content" }}>
-        <h1 style={{ textAlign: "center" }}>Educational Qualifications</h1>
+        <h1 className="eduQuali">
+          Educational <br className="hiddenBreak" /> Qualifications
+        </h1>
         <div className="timeline">
           <ul>
             <li>
