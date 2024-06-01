@@ -454,6 +454,11 @@ html {
   }
 }
 @media (max-width: 768px) {
+  .eduQuali {
+    margin-left: -2.75rem;
+    font-size: 2.25;
+  }
+
   .hiddenBreak {
     display: block;
   }
@@ -470,9 +475,8 @@ html {
     padding-bottom: 0;
   }
   h1 {
-    font-size: 2.25rem;
+    font-size: 2rem;
     text-align: center;
-    margin-left: -2.75rem;
   }
   .timeline:before {
     left: 0.2rem;
