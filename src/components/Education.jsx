@@ -22,7 +22,7 @@ export default function Education() {
                   <img
                     src={KULogo}
                     alt="ClgLogo"
-                    style={{ width: "125px", height: "125px" }}
+                    style={{ width: "7rem", height: "7rem" }}
                   />
                 </p>
               </div>
@@ -43,15 +43,15 @@ export default function Education() {
                     style={{
                       color: "white",
                       backgroundColor: "white",
-                      width: "125px",
-                      height: "150px",
+                      width: "7rem",
+                      height: "8rem",
                     }}
                   />
                 </p>
               </div>
               <div className="time">2022</div>
             </li>
-            <li style={{ height: "225px" }}>
+            <li style={{ height: "11rem" }}>
               <div className="content">
                 <h3>Secondary School</h3>
                 <p>
@@ -64,8 +64,8 @@ export default function Education() {
                     style={{
                       color: "white",
                       backgroundColor: "white",
-                      width: "125px",
-                      height: "150px",
+                      width: "7rem",
+                      height: "8rem",
                     }}
                   />
                 </p>
