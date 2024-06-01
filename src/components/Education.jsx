@@ -14,10 +14,7 @@ export default function Education() {
           <ul>
             <li>
               <div className="content">
-                <h3>
-                  B. Tech. CSE <br />
-                  (Specialization in AI/ML)
-                </h3>
+                <h3>B. Tech. CSE (Specialization in AI/ML)</h3>
                 <p>
                   Unitedworld Institute of Technology, Karnavati University.
                   <br />
