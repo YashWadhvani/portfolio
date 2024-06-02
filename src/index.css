@@ -514,3 +514,35 @@ html {
     margin-top: 0.2rem;
   }
 }
+
+.skill {
+  height: 6rem;
+  width: 6rem;
+  /* background-color: #676e77; */
+  margin: 0.25rem 1rem;
+}
+
+.SkillsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 3rem 0;
+}
+
+.skillsImgContainer {
+  min-width: 40rem;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-evenly; */
+  justify-content: center;
+}
+
+.skillsTitleContainer {
+  min-width: 25rem;
+  text-align: center;
+  align-self: center;
+}
+
+.last {
+  margin-bottom: 5rem;
+}
