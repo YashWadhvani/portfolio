@@ -4,6 +4,7 @@ import {
   AiOutlineCopyrightCircle,
   AiFillGithub,
   AiFillLinkedin,
+  AiOutlineWhatsApp,
 } from "react-icons/ai";
 
 export default function Footer() {
@@ -24,6 +25,14 @@ export default function Footer() {
             target="blank"
           >
             <AiFillLinkedin color="#0077b5" className="logos mx-2" />
+          </a>
+
+          <a
+            href="https://wa.me/919904366478"
+            className="socials"
+            target="blank"
+          >
+            <AiOutlineWhatsApp color="#25d366" className="logos mx-2" />
           </a>
         </Container>
 
