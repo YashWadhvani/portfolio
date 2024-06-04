@@ -63,10 +63,7 @@ export default function Skills() {
               className="skill"
             /> */}
 
-            <i
-              class="devicon-express-original-wordmark"
-              style={{ fontSize: "6rem", color: "white" }}
-            ></i>
+            <i className="devicon-express-original-wordmark skillIcon"></i>
 
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-plain-wordmark.svg"
@@ -143,10 +140,7 @@ export default function Skills() {
               className="skill"
             /> */}
 
-            <i
-              class="devicon-github-original-wordmark"
-              style={{ fontSize: "6rem", color: "white" }}
-            ></i>
+            <i class="devicon-github-original-wordmark skillIcon"></i>
 
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg"
@@ -160,10 +154,7 @@ export default function Skills() {
               className="skill"
             /> */}
 
-            <i
-              class="devicon-markdown-original"
-              style={{ fontSize: "6rem", color: "white" }}
-            ></i>
+            <i className="devicon-markdown-original skillIcon"></i>
 
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original-wordmark.svg"

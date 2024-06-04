@@ -77,7 +77,6 @@ html {
   height: 2px;
   bottom: 0;
   left: 0;
-  /* background-color: #4b8ab6; */
   background-color: #676e77;
   transform-origin: bottom;
   transition: transform 0.25s ease-in-out;
@@ -102,23 +101,6 @@ html {
 
 .navbar-toggler {
   color: #676e77;
-}
-
-#insta {
-  background: radial-gradient(
-    circle at 30% 107%,
-    #fdf497 0%,
-    #fdf497 5%,
-    #fd5949 45%,
-    #d6249f 60%,
-    #285aeb 90%
-  );
-  -webkit-background-clip: text;
-  /* Also define standard property for compatibility */
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  font-size: 20px; /* change this to change the size*/
 }
 
 .copyrightSymbol {
@@ -197,15 +179,6 @@ html {
   margin-left: 8.5rem;
 }
 
-/* @media (max-width: 768px) {
-  .heroImgCon {
-    display: none;
-  }
-  .heroTextCon {
-    flex-basis: 100%;
-  }
-} */
-
 @media (max-width: 768px) {
   body,
   html {
@@ -217,7 +190,6 @@ html {
   }
 
   .darkBgBranding {
-    /* font-size: 0 !important; */
     margin-left: 0 !important;
     padding-left: 0%;
     margin-right: 50px !important;
@@ -234,17 +206,9 @@ html {
     display: none !important;
   }
 
-  /* .brandImg {
-    display: none !important;
-  } */
-
   .navbar-nav {
     align-items: center;
   }
-
-  /* .navbar-toggler {
-    margin-right: 60px;
-  } */
 
   .heroImgCon {
     display: none;
@@ -379,17 +343,12 @@ html {
   top: 1.5rem;
   right: -0.6rem;
   background: rgba(75, 138, 182, 1);
-  /* background: rgba(233, 33, 99, 1); */
   border-radius: 50%;
   box-shadow: 0 0 0 0.3rem rgba(75, 138, 182, 0.2);
 }
 .timeline ul li:nth-child(even):before {
   content: "";
   position: absolute;
-  /* width: 10px;
-  height: 10px;
-  top: 24px;
-  left: -4px; */
   width: 1rem;
   height: 1rem;
   top: 1.5rem;
@@ -518,7 +477,6 @@ html {
 .skill {
   height: 6rem;
   width: 6rem;
-  /* background-color: #676e77; */
   margin: 0.25rem 1rem;
 }
 
@@ -533,7 +491,6 @@ html {
   min-width: 40rem;
   display: flex;
   flex-direction: row;
-  /* justify-content: space-evenly; */
   justify-content: center;
 }
 
@@ -545,4 +502,26 @@ html {
 
 .last {
   margin-bottom: 5rem;
+}
+
+.skillIcon {
+  font-size: 6rem;
+  color: white;
+  margin: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .skillsImgContainer {
+    flex-wrap: wrap;
+    min-width: 20rem;
+  }
+  .skill {
+    height: 4rem;
+    width: 4rem;
+    margin: 0.5rem 1rem;
+  }
+
+  .skillIcon {
+    font-size: 4rem;
+  }
 }
