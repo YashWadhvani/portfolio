@@ -43,6 +43,12 @@ export default function Skills() {
               alt="reactjs"
               className="skill"
             />
+
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg"
+              alt="figma"
+              className="skill"
+            />
           </div>
         </Container>
 
@@ -56,12 +62,6 @@ export default function Skills() {
               alt="javascript"
               className="skill"
             />
-
-            {/* <img
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original-wordmark.svg"
-              alt="expressjs"
-              className="skill"
-            /> */}
 
             <i className="devicon-express-original-wordmark skillIcon"></i>
 
@@ -134,12 +134,6 @@ export default function Skills() {
               className="skill"
             />
 
-            {/* <img
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original-wordmark.svg"
-              alt="github"
-              className="skill"
-            /> */}
-
             <i class="devicon-github-original-wordmark skillIcon"></i>
 
             <img
@@ -147,12 +141,6 @@ export default function Skills() {
               alt="linux"
               className="skill"
             />
-
-            {/* <img
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/markdown/markdown-original.svg"
-              alt="markdown"
-              className="skill"
-            /> */}
 
             <i className="devicon-markdown-original skillIcon"></i>
 
