@@ -1,8 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-// import KULogo from "../assets/Karnavati_University_logo.png";
 import KULogo from "../assets/KarnavatiUniversity_Logo.png";
-// import KULogo from "../assets/KULogo.png";
 import DPSLogo from "../assets/dps_logo.png";
 
 export default function Education() {
