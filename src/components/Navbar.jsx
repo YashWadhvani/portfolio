@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Navbar, Nav, Image } from "react-bootstrap";
-import incognito from "../assets/hacker.png";
+import logo from "../assets/hacker.png";
 
 export default function NavBar() {
   return (
@@ -8,9 +8,9 @@ export default function NavBar() {
       <Container className="navContainer">
         <Navbar expand="lg" className="darkNav navbar-dark mx-5 fixed-top">
           <Container className="darkBgBranding mx-auto">
-            <Image src={incognito} className="brandImg d-inline" />
-            <Navbar.Brand href="#home" className="darkNavText">
-              <p className="d-inline brandText">&lt; Yash Wadhvani &gt;</p>
+            <Image src={logo} className="brandImg d-inline" />
+            <Navbar.Brand href="/" className="darkNavText">
+              <p className="d-inline brandText">&lt; Yash Wadhvani / &gt;</p>
             </Navbar.Brand>
           </Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
