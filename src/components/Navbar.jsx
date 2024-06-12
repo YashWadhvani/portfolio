@@ -10,7 +10,7 @@ export default function NavBar() {
           <Container className="darkBgBranding mx-auto">
             <Image src={logo} className="brandImg d-inline" />
             <Navbar.Brand href="/" className="darkNavText">
-              <p className="d-inline brandText">&lt; Yash Wadhvani / &gt;</p>
+              <p className="d-inline brandText">&lt; Yash Wadhvani &gt;</p>
             </Navbar.Brand>
           </Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
