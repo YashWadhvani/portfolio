@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
+import Project from "./components/Project";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/about" element={<About />} />
         <Route exact path="/projects" element={<Projects />} />
         <Route exact path="/contact" element={<Contact />} />
+        <Route path="/projects/:id" element={<Project />} />
       </Routes>
       <Footer />
     </>

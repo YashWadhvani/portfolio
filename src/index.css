@@ -165,8 +165,8 @@ html {
   display: flex;
   flex-direction: column;
   border-color: #676e77;
-  width: 350px;
-  height: 275px;
+  width: 400px;
+  height: 325px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -176,7 +176,7 @@ html {
   font-family: Arial, sans-serif;
   width: max-content;
   padding: 20px;
-  margin-left: 8.5rem;
+  margin-left: 7rem;
 }
 
 @media (max-width: 768px) {
