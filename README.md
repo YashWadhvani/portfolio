@@ -1,7 +1,7 @@
-# Project Title
+# Yash Wadhvani's Portfolio
 My Personal Portfolio
 
-## Table of Contents
+# Table of Contents
 
 - [Description](#description)
 - [Technologies Used](#technologies-used)
