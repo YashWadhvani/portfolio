@@ -31,11 +31,11 @@ This is my personal portfolio website where I showcase my projects, skills, and 
 # Installation
 1. Clone the repository:
    ```
-   git clone https://github.com/YashWadhvani/Portfolio.git
+   git clone https://github.com/YashWadhvani/portfolio.git
    ```
 2. Navigate to the project directory:
    ```
-   cd Portfolio
+   cd portfolio
    ```
 3. Install dependencies:
    ```
@@ -64,7 +64,7 @@ This project is licensed under the [MIT License](LICENSE).
 Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) when participating in this project.
 
 # Reporting Issues
-If you find a bug or have a feature request, please open an [issue](https://github.com/YashWadhvani/Portfolio/issues) with detailed information.
+If you find a bug or have a feature request, please open an [issue](https://github.com/YashWadhvani/portfolio/issues) with detailed information.
 
 # Acknowledgements
 - [React](https://reactjs.org/)

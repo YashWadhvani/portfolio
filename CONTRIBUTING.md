@@ -9,8 +9,8 @@ Thank you for your interest in contributing to this project! Your help is greatl
 
 2. **Clone your fork**  
     ```
-    git clone https://github.com/YashWadhvani/Portfolio.git
-    cd Portfolio
+    git clone https://github.com/YashWadhvani/portfolio.git
+    cd portfolio
     ```
 
 3. **Create a branch**  
@@ -43,7 +43,7 @@ Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Reporting Issues
 
-- Use the [issue tracker](https://github.com/YashWadhvani/Portfolio/issues) to report bugs or request features.
+- Use the [issue tracker](https://github.com/YashWadhvani/portfolio/issues) to report bugs or request features.
 - Please provide as much detail as possible.
 
 ## Style Guide
