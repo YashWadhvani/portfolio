@@ -10,8 +10,6 @@ import {
   Check,
   Terminal,
   CheckCircle2,
-  AlertCircle,
-  ExternalLink,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { PERSONAL_INFO } from "@/data/portfolioData";
@@ -24,68 +22,35 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [needsActivation, setNeedsActivation] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const emailSubject = encodeURIComponent(
-    formData.subject || `Portfolio Inquiry from ${formData.name || "Visitor"}`
-  );
-  const emailBody = encodeURIComponent(
-    `Hi Yash,\n\n${formData.message}\n\n---\nSender: ${formData.name || "Anonymous"}\nEmail: ${formData.email || "Not specified"}`
-  );
-  const mailtoUrl = `mailto:${PERSONAL_INFO.email}?subject=${emailSubject}&body=${emailBody}`;
-  const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
-    PERSONAL_INFO.email
-  )}&su=${emailSubject}&body=${emailBody}`;
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (!formData.name || !formData.message) return;
 
-    setIsSubmitting(true);
-    setErrorMessage(null);
-    setNeedsActivation(false);
+    const emailSubject = encodeURIComponent(
+      formData.subject || `Portfolio Inquiry from ${formData.name}`
+    );
+    const emailBody = encodeURIComponent(
+      `Hi Yash,\n\n${formData.message}\n\n---\nSender: ${formData.name}\nEmail: ${formData.email || "Not specified"}`
+    );
+    const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      PERSONAL_INFO.email
+    )}&su=${emailSubject}&body=${emailBody}`;
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    // Directly open Gmail web composer with message pre-filled to yashwadhvani123@gmail.com
+    window.open(gmailWebUrl, "_blank", "noopener,noreferrer");
 
-      const data = await response.json().catch(() => ({}));
+    // Celebratory feedback
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
 
-      if (response.ok && data.success) {
-        setIsSubmitting(false);
-        setSubmitted(true);
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
-        setFormData({ name: "", email: "", subject: "", message: "" });
-      } else if (data.needsActivation) {
-        setIsSubmitting(false);
-        setNeedsActivation(true);
-        setErrorMessage(data.message);
-      } else {
-        setIsSubmitting(false);
-        setErrorMessage(
-          data.message ||
-            "Unable to dispatch directly. Click below to launch your email client."
-        );
-      }
-    } catch (err: any) {
-      setIsSubmitting(false);
-      setErrorMessage(
-        "Network connection issue. Click below to open in your default email client."
-      );
-    }
+    setSubmitted(true);
+    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   const handleCopyEmail = () => {
@@ -127,75 +92,10 @@ export default function ContactPage() {
               <div className="p-3.5 rounded bg-editor-bg border border-syntax-type/40 text-syntax-type text-xs font-code flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-syntax-type flex-shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <p className="font-bold">Transmission Dispatched Successfully!</p>
+                  <p className="font-bold">Gmail Web Composer Dispatched!</p>
                   <p className="text-editor-textSecondary font-sans">
-                    Your message was sent directly to <span className="font-code text-editor-textHeading font-semibold">{PERSONAL_INFO.email}</span>. Yash will reply to your email address promptly.
+                    A Gmail tab has opened with your message pre-filled to <span className="font-code text-editor-textHeading font-semibold">{PERSONAL_INFO.email}</span>. Click <strong>Send</strong> in Gmail to finish transmitting your message.
                   </p>
-                </div>
-              </div>
-            )}
-
-            {needsActivation && (
-              <div className="p-4 rounded bg-editor-bg border border-syntax-keyword/50 text-xs font-code space-y-3">
-                <div className="flex items-start gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-syntax-keyword flex-shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="font-bold text-syntax-keyword">Action Required: One-Time Activation</p>
-                    <p className="text-editor-textSecondary font-sans text-xs leading-relaxed">
-                      FormSubmit sent an authorization email to <strong className="text-editor-textHeading font-mono">{PERSONAL_INFO.email}</strong>.
-                      Please open your Gmail (or Spam folder) and click <strong className="text-syntax-type">"Activate Form"</strong> once. Afterwards, all form submissions will deliver automatically to your inbox!
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2 pt-1 border-t border-editor-border">
-                  <a
-                    href={gmailWebUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Send via Gmail Web Instantly</span>
-                  </a>
-                  <a
-                    href={mailtoUrl}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary font-medium text-xs transition border border-editor-border font-code"
-                  >
-                    <Mail className="w-3.5 h-3.5" />
-                    <span>Send via Default Mail App</span>
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {errorMessage && !needsActivation && (
-              <div className="p-3.5 rounded bg-editor-bg border border-syntax-string/40 text-syntax-string text-xs font-code space-y-2">
-                <div className="flex items-start gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-syntax-string flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold">Transmission Notice</p>
-                    <p className="text-editor-textSecondary font-sans text-xs mt-0.5">
-                      {errorMessage}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <a
-                    href={gmailWebUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Send via Gmail Web</span>
-                  </a>
-                  <a
-                    href={mailtoUrl}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary font-medium text-xs transition border border-editor-border font-code"
-                  >
-                    <Mail className="w-3.5 h-3.5" />
-                    <span>Send via Default Mail App</span>
-                  </a>
                 </div>
               </div>
             )}
@@ -266,35 +166,14 @@ export default function ContactPage() {
                 />
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+              <div className="pt-1">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code cursor-pointer"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Transmitting Payload...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-3.5 h-3.5" />
-                      <span>Dispatch Message</span>
-                    </>
-                  )}
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Dispatch Message</span>
                 </button>
-
-                <a
-                  href={gmailWebUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary hover:text-editor-textPrimary font-medium text-xs transition font-code border border-editor-border cursor-pointer"
-                  title="Open directly in Gmail web composer with message pre-filled"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 text-syntax-type" />
-                  <span>Open in Gmail</span>
-                </a>
               </div>
             </form>
           </div>
