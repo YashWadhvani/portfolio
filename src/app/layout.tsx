@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import IDELayout from "@/components/IDELayout";
+import { ThemeProvider } from "@/components/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Yash Wadhvani | Full-Stack Engineer & AI/ML Developer",
   description:
-    "Interactive developer portfolio of Yash Wadhvani, pursuing B.Tech in CSE (AI/ML) at Karnavati University. Features projects, technical competencies, education timeline, and interactive terminal.",
+    "Interactive developer portfolio of Yash Wadhvani, pursuing M.Tech in Advanced Computing at MANIT Bhopal. Features projects, technical competencies, education timeline, and interactive terminal.",
   keywords: [
     "Yash Wadhvani",
     "Portfolio",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     "Next.js",
     "React",
     "AI/ML",
+    "MANIT Bhopal",
     "Karnavati University",
   ],
   authors: [{ name: "Yash Wadhvani" }],
@@ -38,9 +40,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-editor-bg text-slate-100 antialiased selection:bg-sky-500/30 selection:text-sky-200">
-        <IDELayout>{children}</IDELayout>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className="bg-editor-bg text-editor-textPrimary antialiased selection:bg-[#007ACC]/30">
+        <ThemeProvider>
+          <IDELayout>{children}</IDELayout>
+        </ThemeProvider>
       </body>
     </html>
   );

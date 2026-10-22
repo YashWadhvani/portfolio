@@ -8,9 +8,8 @@ import {
   AlertTriangle,
   Terminal,
   CheckCheck,
-  Radio,
   Clock,
-  Sparkles,
+  Radio,
 } from "lucide-react";
 
 interface StatusBarProps {
@@ -37,58 +36,63 @@ export default function StatusBar({
   }, []);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-7 bg-editor-status border-t border-editor-border text-[11px] text-slate-400 flex items-center justify-between px-3 z-50 select-none font-code">
+    <footer className="h-6 shrink-0 w-full bg-[#007ACC] text-white flex items-center justify-between px-2.5 z-40 select-none font-code text-[11px]">
       {/* Left items */}
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-1 sm:space-x-2">
         <a
           href="https://github.com/YashWadhvani/portfolio"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-1 text-sky-400 hover:text-sky-300 transition"
+          className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[#0E639C] transition text-white"
           title="Git Branch: master"
         >
-          <GitBranch className="w-3.5 h-3.5" />
+          <GitBranch className="w-3 h-3" />
           <span>master*</span>
         </a>
 
-        <div className="flex items-center gap-2 text-slate-500">
-          <span className="flex items-center gap-1 hover:text-slate-300 cursor-pointer">
-            <XCircle className="w-3 h-3 text-emerald-400" />
+        <div className="flex items-center gap-1">
+          <span className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[#0E639C] cursor-pointer">
+            <XCircle className="w-3 h-3" />
             <span>0</span>
           </span>
-          <span className="flex items-center gap-1 hover:text-slate-300 cursor-pointer">
-            <AlertTriangle className="w-3 h-3 text-amber-400" />
+          <span className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[#0E639C] cursor-pointer">
+            <AlertTriangle className="w-3 h-3" />
             <span>0</span>
           </span>
         </div>
 
         <button
           onClick={onToggleTerminal}
-          className={`flex items-center gap-1.5 px-2 py-0.5 rounded transition ${
-            isTerminalOpen
-              ? "bg-sky-950 text-sky-300 border border-sky-800/40"
-              : "hover:bg-slate-800 text-slate-400 hover:text-slate-200"
+          className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition ${
+            isTerminalOpen ? "bg-[#0E639C] font-semibold" : "hover:bg-[#0E639C]"
           }`}
           title="Toggle Integrated Terminal (Ctrl + `)"
         >
-          <Terminal className="w-3 h-3 text-cyan-400" />
+          <Terminal className="w-3 h-3" />
           <span>Terminal</span>
         </button>
       </div>
 
       {/* Right items */}
-      <div className="flex items-center space-x-3 text-slate-400">
+      <div className="flex items-center space-x-1.5 sm:space-x-3 text-white/90">
         <div className="hidden md:block">
           <SpotifyNowPlaying variant="ticker" />
         </div>
-        <span className="hidden lg:inline text-slate-500">Ln 42, Col 18</span>
-        <span className="hidden sm:inline text-slate-500">UTF-8</span>
-        <span className="flex items-center gap-1 text-sky-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span className="hidden lg:inline hover:bg-[#0E639C] px-1 py-0.5 rounded cursor-pointer">
+          Ln 42, Col 18
+        </span>
+        <span className="hidden sm:inline hover:bg-[#0E639C] px-1 py-0.5 rounded cursor-pointer">
+          UTF-8
+        </span>
+        <span className="hover:bg-[#0E639C] px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer">
+          <CheckCheck className="w-3 h-3 text-emerald-300" />
+          <span>Prettier</span>
+        </span>
+        <span className="hidden sm:flex items-center gap-1 hover:bg-[#0E639C] px-1.5 py-0.5 rounded cursor-pointer">
           <span>TypeScript JSX</span>
         </span>
-        <span className="flex items-center gap-1 text-slate-300 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-800">
-          <Clock className="w-3 h-3 text-sky-400" />
+        <span className="flex items-center gap-1 bg-[#0E639C] px-1.5 py-0.5 rounded">
+          <Clock className="w-3 h-3" />
           <span>{time || "00:00:00"}</span>
         </span>
       </div>

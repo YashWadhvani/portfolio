@@ -10,50 +10,63 @@ module.exports = {
     extend: {
       colors: {
         editor: {
-          bg: "#090d16",
-          card: "#0d1322",
-          sidebar: "#070a11",
-          activeTab: "#111827",
-          inactiveTab: "#0b0f19",
-          border: "#1f293d",
-          borderFocus: "#38bdf8",
-          line: "#1e293b",
-          status: "#0b0f19",
-          badge: "#17223b",
+          bg: "var(--bg-editor)",
+          card: "var(--bg-card)",
+          cardElevated: "var(--bg-card-elevated)",
+          sidebar: "var(--bg-sidebar)",
+          activityBar: "var(--bg-activity-bar)",
+          activityBarFg: "var(--activity-bar-fg)",
+          activityBarActiveFg: "var(--activity-bar-active-fg)",
+          activityBarActiveBorder: "var(--activity-bar-active-border)",
+          titleBar: "var(--bg-title-bar)",
+          activeTab: "var(--bg-active-tab)",
+          inactiveTab: "var(--bg-inactive-tab)",
+          textActiveTab: "var(--text-active-tab)",
+          textInactiveTab: "var(--text-inactive-tab)",
+          border: "var(--border-editor)",
+          borderSubtle: "var(--border-subtle)",
+          borderFocus: "#007ACC",
+          line: "var(--bg-hover)",
+          status: "var(--bg-status)",
+          statusText: "var(--text-status)",
+          selection: "var(--bg-selection)",
+          hover: "var(--bg-hover)",
+          badge: "#007ACC",
+          input: "var(--bg-input)",
+          borderInput: "var(--border-input)",
+          textInput: "var(--text-input)",
+          inset: "var(--bg-inset)",
+          textPrimary: "var(--text-primary)",
+          textSecondary: "var(--text-secondary)",
+          textMuted: "var(--text-muted)",
+          textHeading: "var(--text-heading)",
         },
         syntax: {
-          keyword: "#c084fc", // purple
-          func: "#38bdf8",    // cyan
-          string: "#4ade80",  // emerald green
-          variable: "#e2e8f0",// light slate
-          number: "#fb923c",  // orange
-          comment: "#64748b", // slate gray
-          tag: "#f43f5e",     // rose
-          operator: "#94a3b8",// muted slate
-          accent: "#00f0ff",  // neon cyan
+          keyword: "var(--syntax-keyword)",
+          storage: "var(--syntax-storage)",
+          func: "var(--syntax-func)",
+          string: "var(--syntax-string)",
+          variable: "var(--syntax-variable)",
+          number: "var(--syntax-number)",
+          comment: "var(--syntax-comment)",
+          type: "var(--syntax-type)",
+          tag: "var(--syntax-tag)",
+          text: "var(--text-primary)",
+          accent: "#007ACC",
         },
       },
       fontFamily: {
-        code: ["'Fira Code'", "'JetBrains Mono'", "Consolas", "monospace"],
-        sans: ["'Outfit'", "'Inter'", "system-ui", "sans-serif"],
+        code: ["'JetBrains Mono'", "'Fira Code'", "Consolas", "'Courier New'", "monospace"],
+        sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
       },
       boxShadow: {
-        "neon-cyan": "0 0 25px -5px rgba(56, 189, 248, 0.4)",
-        "neon-purple": "0 0 25px -5px rgba(192, 132, 252, 0.4)",
-        "neon-emerald": "0 0 25px -5px rgba(74, 222, 128, 0.4)",
-        "glow-card": "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
+        "vscode": "var(--shadow-vscode)",
+        "vscode-menu": "0 2px 8px rgba(0, 0, 0, 0.25)",
       },
       animation: {
-        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "float": "float 6s ease-in-out infinite",
-        "scanline": "scanline 8s linear infinite",
         "blink": "blink 1s step-end infinite",
       },
       keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
         blink: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },

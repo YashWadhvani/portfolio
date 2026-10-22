@@ -1,18 +1,142 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Silkscreen&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-editor: #090d16;
-  --bg-sidebar: #060910;
-  --bg-panel: #0d1322;
-  --border-subtle: #1c2638;
-  --accent-cyan: #38bdf8;
-  --accent-purple: #c084fc;
-  --accent-emerald: #4ade80;
-  --accent-amber: #fbbf24;
+/* =========================================================
+   VS CODE THEME VARIABLES (Dark+ and Light+)
+========================================================= */
+
+:root,
+.dark {
+  /* Surface colors */
+  --bg-editor: #1E1E1E;
+  --bg-sidebar: #252526;
+  --bg-card: #252526;
+  --bg-card-elevated: #2A2D2E;
+  --bg-activity-bar: #333333;
+  --activity-bar-fg: rgba(255, 255, 255, 0.6);
+  --activity-bar-active-fg: #FFFFFF;
+  --activity-bar-active-border: #FFFFFF;
+  --bg-title-bar: #323233;
+  --bg-active-tab: #1E1E1E;
+  --bg-inactive-tab: #2D2D2D;
+  --text-active-tab: #FFFFFF;
+  --text-inactive-tab: #969696;
+  
+  /* Borders */
+  --border-editor: #333333;
+  --border-subtle: #2D2D2D;
+  
+  /* Status bar (Iconic VS Code Blue) */
+  --bg-status: #007ACC;
+  --text-status: #FFFFFF;
+  
+  /* Typography */
+  --text-primary: #D4D4D4;
+  --text-secondary: #CCCCCC;
+  --text-muted: #858585;
+  --text-heading: #FFFFFF;
+  
+  /* Inputs & Insets */
+  --bg-input: #3C3C3C;
+  --border-input: #3C3C3C;
+  --text-input: #D4D4D4;
+  --bg-inset: #1E1E1E;
+  --bg-hover: #2A2D2E;
+  --bg-selection: #264F78;
+  
+  /* Syntax Highlighting: VS Code Dark+ */
+  --syntax-keyword: #C586C0;
+  --syntax-storage: #569CD6;
+  --syntax-func: #DCDCAA;
+  --syntax-string: #CE9178;
+  --syntax-variable: #9CDCFE;
+  --syntax-number: #B5CEA8;
+  --syntax-comment: #6A9955;
+  --syntax-type: #4EC9B0;
+  --syntax-tag: #569CD6;
+  
+  /* Buttons */
+  --btn-primary-bg: #0E639C;
+  --btn-primary-hover: #1177BB;
+  --btn-primary-text: #FFFFFF;
+  --btn-secondary-bg: #3A3D41;
+  --btn-secondary-hover: #45494E;
+  --btn-secondary-text: #FFFFFF;
+  
+  /* Grid & Shadows */
+  --grid-line-color: rgba(255, 255, 255, 0.025);
+  --scrollbar-track: #1E1E1E;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: #4F4F4F;
+  --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+.light {
+  /* Surface colors */
+  --bg-editor: #FFFFFF;
+  --bg-sidebar: #F3F3F3;
+  --bg-card: #F3F3F3;
+  --bg-card-elevated: #FFFFFF;
+  --bg-activity-bar: #ECECEC;
+  --activity-bar-fg: #616161;
+  --activity-bar-active-fg: #000000;
+  --activity-bar-active-border: #007ACC;
+  --bg-title-bar: #DDDDDD;
+  --bg-active-tab: #FFFFFF;
+  --bg-inactive-tab: #ECECEC;
+  --text-active-tab: #333333;
+  --text-inactive-tab: #666666;
+  
+  /* Borders */
+  --border-editor: #E5E5E5;
+  --border-subtle: #E0E0E0;
+  
+  /* Status bar */
+  --bg-status: #007ACC;
+  --text-status: #FFFFFF;
+  
+  /* Typography */
+  --text-primary: #1E1E1E;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --text-heading: #000000;
+  
+  /* Inputs & Insets */
+  --bg-input: #FFFFFF;
+  --border-input: #CECECE;
+  --text-input: #1E1E1E;
+  --bg-inset: #FFFFFF;
+  --bg-hover: #E8E8E8;
+  --bg-selection: #ADD6FF;
+  
+  /* Syntax Highlighting: VS Code Light+ */
+  --syntax-keyword: #AF00DB;
+  --syntax-storage: #0000FF;
+  --syntax-func: #795E26;
+  --syntax-string: #A31515;
+  --syntax-variable: #001080;
+  --syntax-number: #098658;
+  --syntax-comment: #008000;
+  --syntax-type: #267F99;
+  --syntax-tag: #800000;
+  
+  /* Buttons */
+  --btn-primary-bg: #007ACC;
+  --btn-primary-hover: #0062A3;
+  --btn-primary-text: #FFFFFF;
+  --btn-secondary-bg: #E5E5E5;
+  --btn-secondary-hover: #D5D5D5;
+  --btn-secondary-text: #333333;
+  
+  /* Grid & Shadows */
+  --grid-line-color: rgba(0, 0, 0, 0.035);
+  --scrollbar-track: #F3F3F3;
+  --scrollbar-thumb: #C1C1C1;
+  --scrollbar-thumb-hover: #A6A6A6;
+  --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -23,86 +147,50 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #070a12;
-  color: #e2e8f0;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-editor);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 code, pre, .font-code {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
 }
 
-/* Custom Scrollbars */
+/* VS Code Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: var(--scrollbar-thumb);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Background Cyber Grid */
-.bg-grid-pattern {
-  background-size: 40px 40px;
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/* Subtle Technical Editor Grid */
+.bg-grid-subtle {
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
 }
 
-.bg-radial-glow {
-  background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, rgba(192, 132, 252, 0.06) 40%, transparent 70%);
-}
-
-/* Glassmorphic Cards */
-.glass-panel {
-  background: rgba(13, 19, 34, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(56, 189, 248, 0.12);
-}
-
-.glass-panel:hover {
-  border-color: rgba(56, 189, 248, 0.28);
-}
-
-/* Scanline Effect */
-.scanlines {
-  position: relative;
-}
-.scanlines::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-  opacity: 0.35;
-}
-
-/* Glowing text */
-.text-glow-cyan {
-  text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-}
-
-.text-glow-purple {
-  text-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
-}
-
-/* Custom Animation Utilities */
+/* Blinking Cursor for editor prompts */
 @keyframes cursorBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }

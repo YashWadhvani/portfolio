@@ -58,7 +58,7 @@ export default function IDELayout({
   }, []);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-editor-bg text-slate-100 select-text">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-editor-bg text-editor-textPrimary select-text transition-colors duration-150">
       {/* Top VS Code Titlebar */}
       <TitleBar
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -66,11 +66,11 @@ export default function IDELayout({
       />
 
       {/* Main workspace layout: ActivityBar + Sidebar + Editor Window */}
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Mobile Backdrop when sidebar is open */}
         {isMobile && isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs z-20"
+            className="fixed inset-0 bg-black/60 z-20"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
@@ -79,10 +79,10 @@ export default function IDELayout({
         <div
           className={`${
             isMobile
-              ? `fixed top-9 bottom-7 left-0 z-30 transition-transform duration-300 shadow-2xl ${
+              ? `fixed top-9 bottom-6 left-0 z-30 transition-transform duration-300 shadow-vscode ${
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
-              : "relative flex h-full"
+              : "relative flex h-full shrink-0"
           }`}
         >
           <Sidebar
@@ -92,12 +92,12 @@ export default function IDELayout({
         </div>
 
         {/* Central Editor Area */}
-        <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-editor-bg relative bg-grid-pattern">
+        <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-editor-bg relative bg-grid-subtle">
           {/* File Tabs & Breadcrumbs */}
           <TabBar />
 
           {/* Code/Page Content Area */}
-          <div className="flex-1 overflow-y-auto pb-14 bg-radial-glow px-2 sm:px-4">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-4">
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

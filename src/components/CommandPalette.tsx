@@ -12,11 +12,12 @@ import {
   Terminal,
   ExternalLink,
   X,
-  Code,
-  Sparkles,
+  Sun,
+  Moon,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { PERSONAL_INFO } from "@/data/portfolioData";
+import { useTheme } from "./ThemeContext";
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export default function CommandPalette({
 }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,8 +40,6 @@ export default function CommandPalette({
         e.preventDefault();
         if (isOpen) {
           onClose();
-        } else {
-          // Trigger open via custom event or parent
         }
       }
       if (e.key === "Escape" && isOpen) {
@@ -54,10 +54,20 @@ export default function CommandPalette({
 
   const actions = [
     {
+      id: "theme",
+      title: `Switch Theme to ${theme === "dark" ? "VS Code Light+" : "VS Code Dark+"}`,
+      description: "Toggle between VS Code Default Dark+ and Light+ themes",
+      icon: theme === "dark" ? <Sun className="w-4 h-4 text-syntax-string" /> : <Moon className="w-4 h-4 text-syntax-variable" />,
+      run: () => {
+        toggleTheme();
+        onClose();
+      },
+    },
+    {
       id: "home",
       title: "Go to Home (home.tsx)",
       description: "Hero, Overview, and Quick Stats",
-      icon: <FileCode2 className="w-4 h-4 text-sky-400" />,
+      icon: <FileCode2 className="w-4 h-4 text-syntax-storage" />,
       run: () => {
         router.push("/");
         onClose();
@@ -67,7 +77,7 @@ export default function CommandPalette({
       id: "about",
       title: "Go to About (about.tsx)",
       description: "Bio, Education Timeline, and Skills Matrix",
-      icon: <User className="w-4 h-4 text-purple-400" />,
+      icon: <User className="w-4 h-4 text-syntax-keyword" />,
       run: () => {
         router.push("/about");
         onClose();
@@ -77,7 +87,7 @@ export default function CommandPalette({
       id: "projects",
       title: "Go to Projects (projects.tsx)",
       description: "Browse GitHub repositories & featured apps",
-      icon: <FolderGit2 className="w-4 h-4 text-emerald-400" />,
+      icon: <FolderGit2 className="w-4 h-4 text-syntax-type" />,
       run: () => {
         router.push("/projects");
         onClose();
@@ -87,7 +97,7 @@ export default function CommandPalette({
       id: "contact",
       title: "Go to Contact (contact.tsx)",
       description: "Send message, email, WhatsApp, or socials",
-      icon: <Mail className="w-4 h-4 text-amber-400" />,
+      icon: <Mail className="w-4 h-4 text-syntax-string" />,
       run: () => {
         router.push("/contact");
         onClose();
@@ -97,7 +107,7 @@ export default function CommandPalette({
       id: "terminal",
       title: "Toggle Integrated Terminal",
       description: "Open the interactive bash terminal (Ctrl + `)",
-      icon: <Terminal className="w-4 h-4 text-cyan-400" />,
+      icon: <Terminal className="w-4 h-4 text-syntax-variable" />,
       run: () => {
         if (onToggleTerminal) onToggleTerminal();
         onClose();
@@ -107,7 +117,7 @@ export default function CommandPalette({
       id: "resume",
       title: "Download Resume (PDF)",
       description: "Download Yash's latest verified resume with celebratory confetti",
-      icon: <FileDown className="w-4 h-4 text-rose-400" />,
+      icon: <FileDown className="w-4 h-4 text-syntax-string" />,
       run: () => {
         confetti({
           particleCount: 80,
@@ -122,7 +132,7 @@ export default function CommandPalette({
       id: "github",
       title: "Open GitHub Profile",
       description: "github.com/YashWadhvani",
-      icon: <ExternalLink className="w-4 h-4 text-slate-300" />,
+      icon: <ExternalLink className="w-4 h-4 text-editor-textMuted" />,
       run: () => {
         window.open(PERSONAL_INFO.githubUrl, "_blank");
         onClose();
@@ -137,34 +147,34 @@ export default function CommandPalette({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 animate-in fade-in duration-150">
       <div
-        className="relative w-full max-w-xl bg-editor-card border border-editor-border rounded-xl shadow-2xl shadow-black/80 overflow-hidden"
+        className="relative w-full max-w-xl bg-editor-card border border-editor-border rounded-lg shadow-vscode overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3 border-b border-editor-border bg-editor-bg/80">
-          <Search className="w-5 h-5 text-sky-400 mr-3 flex-shrink-0" />
+        <div className="flex items-center px-4 py-2.5 border-b border-editor-border bg-editor-bg">
+          <Search className="w-4 h-4 text-syntax-storage mr-3 flex-shrink-0" />
           <input
             type="text"
-            placeholder="Type a command or file name... (e.g. projects, resume, terminal)"
-            className="w-full bg-transparent text-sm text-slate-200 placeholder-slate-500 focus:outline-none font-code"
+            placeholder="Type a command or file name... (e.g. projects, resume, theme, terminal)"
+            className="w-full bg-transparent text-xs text-editor-textPrimary placeholder-editor-textMuted focus:outline-none font-code"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
           />
           <button
             onClick={onClose}
-            className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1 rounded text-editor-textMuted hover:text-editor-textPrimary hover:bg-editor-hover transition cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 divide-y divide-slate-800/40">
+        <div className="max-h-80 overflow-y-auto p-1.5 divide-y divide-editor-border/50">
           {filteredActions.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 text-sm">
+            <div className="p-8 text-center text-editor-textMuted text-xs font-code">
               No matching commands or files found for "{query}".
             </div>
           ) : (
@@ -172,21 +182,21 @@ export default function CommandPalette({
               <button
                 key={action.id}
                 onClick={action.run}
-                className="w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800/70 transition group text-sm"
+                className="w-full text-left flex items-center gap-3 px-3 py-2 rounded hover:bg-editor-hover transition group text-xs cursor-pointer"
               >
-                <div className="p-2 rounded-md bg-slate-900 border border-slate-800 group-hover:border-sky-500/40 transition">
+                <div className="p-1.5 rounded bg-editor-bg border border-editor-border group-hover:border-editor-borderFocus transition">
                   {action.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-slate-200 font-medium font-code text-xs group-hover:text-sky-300 transition">
+                  <div className="text-editor-textPrimary font-medium font-code group-hover:text-editor-textHeading transition">
                     {action.title}
                   </div>
-                  <div className="text-slate-400 text-xs truncate">
+                  <div className="text-editor-textMuted text-[11px] truncate group-hover:text-editor-textSecondary">
                     {action.description}
                   </div>
                 </div>
-                <span className="text-[10px] text-slate-500 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800 font-code">
-                  Press ↵
+                <span className="text-[10px] text-editor-textMuted bg-editor-bg px-1.5 py-0.5 rounded border border-editor-border font-code">
+                  ↵
                 </span>
               </button>
             ))
@@ -194,8 +204,8 @@ export default function CommandPalette({
         </div>
 
         {/* Footer info */}
-        <div className="px-4 py-2 border-t border-editor-border bg-editor-sidebar text-[11px] text-slate-500 flex justify-between items-center font-code">
-          <span>Tip: Navigation and actions available via keyboard</span>
+        <div className="px-3.5 py-1.5 border-t border-editor-border bg-editor-bg text-[10px] text-editor-textMuted flex justify-between items-center font-code">
+          <span>Navigation and actions available via keyboard</span>
           <span>ESC to close</span>
         </div>
       </div>

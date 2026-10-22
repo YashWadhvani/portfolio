@@ -92,20 +92,17 @@ function CallbackContent() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-editor-border bg-editor-card p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
-        {/* Glow */}
-        <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#1DB954]/20 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="w-full max-w-lg rounded-lg border border-editor-border bg-[#252526] p-6 sm:p-8 space-y-6 shadow-vscode relative overflow-hidden">
         {/* Header */}
-        <div className="flex items-center gap-3 border-b border-editor-border/60 pb-4">
-          <div className="p-2.5 rounded-xl bg-[#1DB954]/10 border border-[#1DB954]/30 text-[#1DB954]">
-            <Music className="w-6 h-6 animate-pulse" />
+        <div className="flex items-center gap-3 border-b border-editor-border pb-4">
+          <div className="p-2 rounded bg-[#1E1E1E] border border-editor-border text-[#1DB954]">
+            <Music className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white font-sans">
+            <h1 className="text-base font-bold text-white font-sans">
               Spotify 1-Time Authorization
             </h1>
-            <p className="text-xs text-slate-400 font-code">
+            <p className="text-xs text-[#858585] font-code">
               One-time setup so visitors can see what you are listening to
             </p>
           </div>
@@ -114,11 +111,11 @@ function CallbackContent() {
         {/* State: Loading */}
         {status === "loading" && (
           <div className="py-8 text-center space-y-3 font-code">
-            <div className="w-8 h-8 border-2 border-[#1DB954] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-sm text-slate-300">
+            <div className="w-7 h-7 border-2 border-[#1DB954] border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-xs text-[#D4D4D4]">
               Exchanging code for permanent Spotify Refresh Token...
             </p>
-            <p className="text-xs text-slate-500">
+            <p className="text-[11px] text-[#858585]">
               Saving credentials to .env.local automatically
             </p>
           </div>
@@ -126,36 +123,36 @@ function CallbackContent() {
 
         {/* State: Success */}
         {status === "success" && (
-          <div className="space-y-5">
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs font-code">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 p-3 rounded bg-[#1E1E1E] border border-[#1DB954]/40 text-[#1DB954] text-xs font-code">
+              <CheckCircle2 className="w-4 h-4 text-[#1DB954] flex-shrink-0" />
               <div>
-                <p className="font-semibold text-emerald-200">
+                <p className="font-semibold text-white">
                   Spotify Successfully Connected!
                 </p>
-                <p className="text-[11px] text-emerald-400/80 mt-0.5">
+                <p className="text-[11px] text-[#CCCCCC] mt-0.5 font-sans">
                   Your refresh token has been automatically saved to .env.local. Visitors can now see your live tracks!
                 </p>
               </div>
             </div>
 
-            <div className="space-y-1.5 font-code text-xs">
-              <label className="text-slate-400 text-[11px]">
+            <div className="space-y-1 font-code text-xs">
+              <label className="text-[#858585] text-[11px]">
                 Generated Refresh Token:
               </label>
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg p-2.5">
-                <span className="truncate text-slate-300 flex-1 font-mono text-[11px]">
+              <div className="flex items-center gap-2 bg-[#1E1E1E] border border-editor-border rounded p-2">
+                <span className="truncate text-[#D4D4D4] flex-1 font-mono text-[11px]">
                   {refreshToken}
                 </span>
                 <button
                   onClick={copyToken}
-                  className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition"
+                  className="p-1 rounded hover:bg-[#2A2D2E] text-[#858585] hover:text-[#D4D4D4] transition"
                   title="Copy token"
                 >
                   {copied ? (
-                    <Check className="w-4 h-4 text-emerald-400" />
+                    <Check className="w-3.5 h-3.5 text-[#1DB954]" />
                   ) : (
-                    <Copy className="w-4 h-4" />
+                    <Copy className="w-3.5 h-3.5" />
                   )}
                 </button>
               </div>
@@ -163,10 +160,10 @@ function CallbackContent() {
 
             <Link
               href="/"
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#1DB954] to-emerald-600 hover:from-[#1ed760] hover:to-emerald-500 text-white font-medium text-sm transition shadow-lg shadow-emerald-500/25 font-code"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code"
             >
               <span>View Now Playing on Portfolio</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         )}

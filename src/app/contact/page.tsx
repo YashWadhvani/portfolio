@@ -4,20 +4,18 @@ import React, { useState } from "react";
 import {
   Mail,
   Send,
-  MessageSquare,
   Github,
   Linkedin,
   Copy,
   Check,
-  Sparkles,
   Terminal,
-  MapPin,
-  Clock,
-  Phone,
   CheckCircle2,
+  AlertCircle,
+  ExternalLink,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { PERSONAL_INFO } from "@/data/portfolioData";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -28,24 +26,66 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [needsActivation, setNeedsActivation] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const emailSubject = encodeURIComponent(
+    formData.subject || `Portfolio Inquiry from ${formData.name || "Visitor"}`
+  );
+  const emailBody = encodeURIComponent(
+    `Hi Yash,\n\n${formData.message}\n\n---\nSender: ${formData.name || "Anonymous"}\nEmail: ${formData.email || "Not specified"}`
+  );
+  const mailtoUrl = `mailto:${PERSONAL_INFO.email}?subject=${emailSubject}&body=${emailBody}`;
+  const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    PERSONAL_INFO.email
+  )}&su=${emailSubject}&body=${emailBody}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: ["#38bdf8", "#c084fc", "#4ade80", "#fbbf24"],
+    setErrorMessage(null);
+    setNeedsActivation(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 900);
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        setIsSubmitting(false);
+        setSubmitted(true);
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else if (data.needsActivation) {
+        setIsSubmitting(false);
+        setNeedsActivation(true);
+        setErrorMessage(data.message);
+      } else {
+        setIsSubmitting(false);
+        setErrorMessage(
+          data.message ||
+            "Unable to dispatch directly. Click below to launch your email client."
+        );
+      }
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setErrorMessage(
+        "Network connection issue. Click below to open in your default email client."
+      );
+    }
   };
 
   const handleCopyEmail = () => {
@@ -55,51 +95,116 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <div className="max-w-6xl mx-auto space-y-10 py-2 sm:py-6 text-editor-textPrimary">
       {/* Page Header */}
-      <div className="space-y-2 border-b border-editor-border pb-6">
-        <div className="flex items-center gap-2 text-xs font-code text-amber-400">
+      <div className="space-y-2 border-b border-editor-border pb-5">
+        <div className="flex items-center gap-2 text-xs font-code text-syntax-string">
           <Terminal className="w-4 h-4" />
           <span>CONTACT_DISPATCHER.TSX</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-editor-textHeading tracking-tight">
           Get in Touch
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base font-sans max-w-2xl">
+        <p className="text-editor-textSecondary text-xs sm:text-sm font-sans max-w-2xl leading-relaxed">
           Interested in collaborating on software engineering, AI/ML initiatives, or discussing open roles? Drop a message or reach out directly.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Interactive Contact Form */}
         <div className="lg:col-span-7">
-          <div className="rounded-2xl border border-editor-border bg-editor-card p-6 sm:p-8 space-y-6 shadow-2xl relative">
-            <div className="flex items-center justify-between pb-3 border-b border-editor-border/60">
-              <span className="text-xs font-code text-slate-400">
+          <div className="rounded-lg border border-editor-border bg-editor-card p-5 sm:p-6 space-y-5 shadow-vscode relative">
+            <div className="flex items-center justify-between pb-3 border-b border-editor-border">
+              <span className="text-xs font-code text-editor-textMuted">
                 sendMessage(payload: MessagePayload)
               </span>
-              <span className="text-[11px] font-code text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/40">
-                REST ENDPOINT: ACTIVE
+              <span className="text-[10px] font-code text-syntax-type bg-editor-bg px-2 py-0.5 rounded border border-editor-border">
+                TARGET: yashwadhvani123@gmail.com
               </span>
             </div>
 
             {submitted && (
-              <div className="p-4 rounded-xl bg-emerald-950/50 border border-emerald-800/60 text-emerald-300 text-xs font-code flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <p className="font-bold text-sm">Transmission Acknowledged! 🚀</p>
-                  <p className="text-emerald-400/90 font-sans">
-                    Thank you for reaching out! Your message was recorded, and Yash will reply promptly.
+              <div className="p-3.5 rounded bg-editor-bg border border-syntax-type/40 text-syntax-type text-xs font-code flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-syntax-type flex-shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <p className="font-bold">Transmission Dispatched Successfully!</p>
+                  <p className="text-editor-textSecondary font-sans">
+                    Your message was sent directly to <span className="font-code text-editor-textHeading font-semibold">{PERSONAL_INFO.email}</span>. Yash will reply to your email address promptly.
                   </p>
                 </div>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-code text-slate-300">
-                    sender.name <span className="text-rose-400">*</span>
+            {needsActivation && (
+              <div className="p-4 rounded bg-editor-bg border border-syntax-keyword/50 text-xs font-code space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-syntax-keyword flex-shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="font-bold text-syntax-keyword">Action Required: One-Time Activation</p>
+                    <p className="text-editor-textSecondary font-sans text-xs leading-relaxed">
+                      FormSubmit sent an authorization email to <strong className="text-editor-textHeading font-mono">{PERSONAL_INFO.email}</strong>.
+                      Please open your Gmail (or Spam folder) and click <strong className="text-syntax-type">"Activate Form"</strong> once. Afterwards, all form submissions will deliver automatically to your inbox!
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 pt-1 border-t border-editor-border">
+                  <a
+                    href={gmailWebUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Send via Gmail Web Instantly</span>
+                  </a>
+                  <a
+                    href={mailtoUrl}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary font-medium text-xs transition border border-editor-border font-code"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Send via Default Mail App</span>
+                  </a>
+                </div>
+              </div>
+            )}
+
+            {errorMessage && !needsActivation && (
+              <div className="p-3.5 rounded bg-editor-bg border border-syntax-string/40 text-syntax-string text-xs font-code space-y-2">
+                <div className="flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-syntax-string flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold">Transmission Notice</p>
+                    <p className="text-editor-textSecondary font-sans text-xs mt-0.5">
+                      {errorMessage}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <a
+                    href={gmailWebUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Send via Gmail Web</span>
+                  </a>
+                  <a
+                    href={mailtoUrl}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary font-medium text-xs transition border border-editor-border font-code"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Send via Default Mail App</span>
+                  </a>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-code text-editor-textMuted">
+                    sender.name <span className="text-syntax-string">*</span>
                   </label>
                   <input
                     type="text"
@@ -109,13 +214,13 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="w-full px-3.5 py-2.5 bg-editor-bg border border-editor-border rounded-lg text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-sky-500 font-sans"
+                    className="w-full px-3 py-2 bg-editor-input border border-editor-borderInput rounded text-xs text-editor-textInput placeholder-editor-textMuted focus:outline-none focus:border-editor-borderFocus font-sans"
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-code text-slate-300">
-                    sender.email <span className="text-rose-400">*</span>
+                <div className="space-y-1">
+                  <label className="text-xs font-code text-editor-textMuted">
+                    sender.email <span className="text-syntax-string">*</span>
                   </label>
                   <input
                     type="email"
@@ -125,13 +230,13 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-3.5 py-2.5 bg-editor-bg border border-editor-border rounded-lg text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-sky-500 font-sans"
+                    className="w-full px-3 py-2 bg-editor-input border border-editor-borderInput rounded text-xs text-editor-textInput placeholder-editor-textMuted focus:outline-none focus:border-editor-borderFocus font-sans"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-code text-slate-300">
+              <div className="space-y-1">
+                <label className="text-xs font-code text-editor-textMuted">
                   payload.subject
                 </label>
                 <input
@@ -141,70 +246,83 @@ export default function ContactPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, subject: e.target.value })
                   }
-                  className="w-full px-3.5 py-2.5 bg-editor-bg border border-editor-border rounded-lg text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-sky-500 font-sans"
+                  className="w-full px-3 py-2 bg-editor-input border border-editor-borderInput rounded text-xs text-editor-textInput placeholder-editor-textMuted focus:outline-none focus:border-editor-borderFocus font-sans"
                 />
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-code text-slate-300">
-                  payload.message <span className="text-rose-400">*</span>
+              <div className="space-y-1">
+                <label className="text-xs font-code text-editor-textMuted">
+                  payload.message <span className="text-syntax-string">*</span>
                 </label>
                 <textarea
-                  rows={5}
+                  rows={4}
                   required
                   placeholder="Hey Yash, I saw your portfolio and would love to connect about..."
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className="w-full px-3.5 py-2.5 bg-editor-bg border border-editor-border rounded-lg text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-sky-500 font-sans resize-none"
+                  className="w-full px-3 py-2 bg-editor-input border border-editor-borderInput rounded text-xs text-editor-textInput placeholder-editor-textMuted focus:outline-none focus:border-editor-borderFocus font-sans resize-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-medium text-sm transition shadow-lg shadow-sky-500/25 font-code disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Transmitting Payload...</span>
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    <span>Dispatch Message</span>
-                  </>
-                )}
-              </button>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs transition font-code disabled:opacity-50 cursor-pointer"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Transmitting Payload...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Dispatch Message</span>
+                    </>
+                  )}
+                </button>
+
+                <a
+                  href={gmailWebUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary hover:text-editor-textPrimary font-medium text-xs transition font-code border border-editor-border cursor-pointer"
+                  title="Open directly in Gmail web composer with message pre-filled"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-syntax-type" />
+                  <span>Open in Gmail</span>
+                </a>
+              </div>
             </form>
           </div>
         </div>
 
         {/* Right Column: Direct Channels & Information */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 space-y-4">
           {/* Quick Copy Email Card */}
-          <div className="rounded-2xl border border-editor-border bg-editor-card p-6 space-y-4 shadow-xl">
-            <h3 className="text-base font-bold text-white font-sans flex items-center gap-2">
-              <Mail className="w-4 h-4 text-sky-400" />
+          <div className="rounded-lg border border-editor-border bg-editor-card p-5 space-y-3 shadow-vscode">
+            <h3 className="text-sm font-bold text-editor-textHeading font-sans flex items-center gap-2">
+              <Mail className="w-4 h-4 text-syntax-storage" />
               <span>Direct Electronic Mail</span>
             </h3>
 
-            <div className="flex items-center justify-between p-3 rounded-lg bg-editor-bg border border-editor-border font-code text-xs">
-              <span className="text-slate-300 truncate">{PERSONAL_INFO.email}</span>
+            <div className="flex items-center justify-between p-2.5 rounded bg-editor-bg border border-editor-border font-code text-xs">
+              <span className="text-editor-textSecondary truncate">{PERSONAL_INFO.email}</span>
               <button
                 onClick={handleCopyEmail}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition ml-2 flex-shrink-0"
+                className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary text-[11px] transition ml-2 flex-shrink-0 border border-editor-border cursor-pointer"
               >
                 {copiedEmail ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">Copied</span>
+                    <Check className="w-3 h-3 text-syntax-type" />
+                    <span className="text-syntax-type">Copied</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5" />
+                    <Copy className="w-3 h-3" />
                     <span>Copy</span>
                   </>
                 )}
@@ -213,34 +331,32 @@ export default function ContactPage() {
           </div>
 
           {/* Social Links List */}
-          <div className="rounded-2xl border border-editor-border bg-editor-card p-6 space-y-4 shadow-xl font-sans">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-400" />
+          <div className="rounded-lg border border-editor-border bg-editor-card p-5 space-y-3 shadow-vscode font-sans">
+            <h3 className="text-sm font-bold text-editor-textHeading flex items-center gap-2">
+              <Terminal className="w-4 h-4 text-syntax-keyword" />
               <span>Network &amp; Direct Messaging</span>
             </h3>
 
-            <div className="space-y-3 font-code text-xs">
+            <div className="space-y-2 font-code text-xs">
               {/* WhatsApp */}
               <a
                 href={PERSONAL_INFO.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 hover:bg-emerald-950/20 transition group"
+                className="flex items-center justify-between p-2.5 rounded bg-editor-bg border border-editor-border hover:border-editor-borderFocus transition group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">
-                    <MessageSquare className="w-4 h-4" />
-                  </div>
+                <div className="flex items-center gap-2.5">
+                  <WhatsAppIcon className="w-4 h-4 text-syntax-type" />
                   <div>
-                    <div className="text-slate-200 font-semibold group-hover:text-emerald-300 transition">
+                    <div className="text-editor-textSecondary font-medium group-hover:text-editor-textHeading transition">
                       WhatsApp Instant Chat
                     </div>
-                    <div className="text-slate-500 text-[11px] font-sans">
+                    <div className="text-editor-textMuted text-[11px] font-sans">
                       {PERSONAL_INFO.phone}
                     </div>
                   </div>
                 </div>
-                <span className="text-emerald-400 text-xs font-semibold">&rarr;</span>
+                <span className="text-editor-textMuted text-xs font-semibold">&rarr;</span>
               </a>
 
               {/* LinkedIn */}
@@ -248,22 +364,20 @@ export default function ContactPage() {
                 href={PERSONAL_INFO.linkedinUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-sky-500/50 hover:bg-sky-950/20 transition group"
+                className="flex items-center justify-between p-2.5 rounded bg-editor-bg border border-editor-border hover:border-editor-borderFocus transition group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-sky-950/60 text-sky-400 border border-sky-800/40">
-                    <Linkedin className="w-4 h-4" />
-                  </div>
+                <div className="flex items-center gap-2.5">
+                  <Linkedin className="w-4 h-4 text-syntax-storage" />
                   <div>
-                    <div className="text-slate-200 font-semibold group-hover:text-sky-300 transition">
-                      LinkedIn Professional Profile
+                    <div className="text-editor-textSecondary font-medium group-hover:text-editor-textHeading transition">
+                      LinkedIn Profile
                     </div>
-                    <div className="text-slate-500 text-[11px] font-sans">
+                    <div className="text-editor-textMuted text-[11px] font-sans">
                       yash-wadhvani
                     </div>
                   </div>
                 </div>
-                <span className="text-sky-400 text-xs font-semibold">&rarr;</span>
+                <span className="text-editor-textMuted text-xs font-semibold">&rarr;</span>
               </a>
 
               {/* GitHub */}
@@ -271,22 +385,20 @@ export default function ContactPage() {
                 href={PERSONAL_INFO.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-purple-500/50 hover:bg-purple-950/20 transition group"
+                className="flex items-center justify-between p-2.5 rounded bg-editor-bg border border-editor-border hover:border-editor-borderFocus transition group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-purple-950/60 text-purple-400 border border-purple-800/40">
-                    <Github className="w-4 h-4" />
-                  </div>
+                <div className="flex items-center gap-2.5">
+                  <Github className="w-4 h-4 text-syntax-keyword" />
                   <div>
-                    <div className="text-slate-200 font-semibold group-hover:text-purple-300 transition">
-                      GitHub Repositories &amp; Code
+                    <div className="text-editor-textSecondary font-medium group-hover:text-editor-textHeading transition">
+                      GitHub Repositories
                     </div>
-                    <div className="text-slate-500 text-[11px] font-sans">
+                    <div className="text-editor-textMuted text-[11px] font-sans">
                       github.com/YashWadhvani
                     </div>
                   </div>
                 </div>
-                <span className="text-purple-400 text-xs font-semibold">&rarr;</span>
+                <span className="text-editor-textMuted text-xs font-semibold">&rarr;</span>
               </a>
             </div>
           </div>

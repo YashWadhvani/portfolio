@@ -66,10 +66,10 @@ export const PERSONAL_INFO = {
   handle: "yashwadhvani",
   title: "Full Stack & Mobile Engineer | AI/ML Specialist",
   roles: [
-    "Full-Stack Developer",
-    "Mobile App Engineer (React Native & Flutter)",
+    "Full-Stack Engineer",
+    "Mobile App Developer",
     "AI/ML Specialist",
-    "M.Tech Advanced Computing Scholar",
+    "M.Tech Scholar (MANIT)",
     "Open Source Contributor",
   ],
   bio: "M.Tech Scholar in Advanced Computing at MANIT Bhopal & B.Tech CSE (AI/ML) Graduate from Karnavati University (CGPA 8.72). Experienced in building production web applications, cross-platform mobile apps (Flutter, React Native), and intelligent risk-minimization machine learning frameworks.",

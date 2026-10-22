@@ -11,11 +11,9 @@ import {
   Star,
   GitFork,
   Code2,
-  BookOpen,
-  Sparkles,
   Music2,
-  Radio,
   CheckCircle2,
+  Terminal,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { PERSONAL_INFO, ALL_REPOSITORIES, ProjectItem } from "@/data/portfolioData";
@@ -36,7 +34,7 @@ export default function HomePage() {
     let timeout: NodeJS.Timeout;
 
     if (!isDeleting && displayText === currentRole) {
-      timeout = setTimeout(() => setIsDeleting(true), 1800);
+      timeout = setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && displayText === "") {
       setIsDeleting(false);
       setRoleIndex((prev) => (prev + 1) % PERSONAL_INFO.roles.length);
@@ -49,7 +47,7 @@ export default function HomePage() {
               : currentRole.substring(0, prev.length + 1)
           );
         },
-        isDeleting ? 40 : 80
+        isDeleting ? 30 : 60
       );
     }
 
@@ -64,7 +62,6 @@ export default function HomePage() {
         if (!res.ok) throw new Error("Failed to fetch GitHub repos");
         const data: ProjectItem[] = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          // Sort by real stars descending, then take top 3
           const sorted = [...data].sort((a, b) => b.stars - a.stars);
           setProjects(sorted.slice(0, 3));
           setIsLiveGitHub(true);
@@ -79,59 +76,84 @@ export default function HomePage() {
 
   const handleDownloadResume = () => {
     confetti({
-      particleCount: 85,
-      spread: 70,
+      particleCount: 80,
+      spread: 60,
       origin: { y: 0.6 },
-      colors: ["#38bdf8", "#c084fc", "#4ade80", "#fbbf24"],
     });
     window.open(PERSONAL_INFO.resumeUrl, "_blank");
   };
 
+  const getLanguageColor = (lang: string) => {
+    switch (lang?.toLowerCase()) {
+      case "python":
+        return "#3572A5";
+      case "javascript":
+        return "#F7DF1E";
+      case "typescript":
+        return "#3178C6";
+      case "dart":
+        return "#00B4AB";
+      case "java":
+        return "#B07219";
+      case "c++":
+      case "cpp":
+        return "#F34B7D";
+      case "html":
+        return "#E34C26";
+      default:
+        return "#569CD6";
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+    <div className="max-w-6xl mx-auto space-y-12 py-2 sm:py-6 text-editor-textPrimary">
       {/* Hero Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-4">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: Code Window & Narrative */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs font-code">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="text-slate-400">STATUS:</span>
-            <span className="text-emerald-300 font-medium">M.Tech Scholar @ MANIT Bhopal</span>
+        <div className="lg:col-span-7 space-y-5">
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-editor-card border border-editor-border text-xs font-code">
+            <span className="w-2 h-2 rounded-full bg-syntax-type"></span>
+            <span className="text-editor-textMuted">STATUS:</span>
+            <span className="text-editor-textPrimary font-medium">M.Tech Scholar @ MANIT Bhopal</span>
           </div>
 
-          {/* Heading with dynamic typing */}
+          {/* Heading with trimmed dynamic typing */}
           <div className="space-y-2">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-sans">
-              Hey, I'm{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-purple-400">
-                {PERSONAL_INFO.name}
-              </span>
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-editor-textHeading font-sans">
+              Hey, I'm <span className="text-syntax-variable">{PERSONAL_INFO.name}</span>
             </h1>
 
-            <div className="flex items-center gap-2 text-lg sm:text-2xl text-slate-300 font-code font-semibold min-h-[40px]">
-              <span className="text-purple-400">&gt;</span>
-              <span className="text-sky-300">{displayText}</span>
-              <span className="inline-block w-2.5 h-6 bg-sky-400 animate-cursor"></span>
+            {/* Trimmed, clean typewriter prompt line */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-editor-card border border-editor-border font-code text-xs sm:text-sm text-editor-textPrimary">
+              <span className="text-syntax-storage">const</span>
+              <span className="text-syntax-type">role</span>
+              <span className="text-editor-textPrimary">=</span>
+              <span className="text-syntax-string">"{displayText}"</span>
+              <span className="inline-block w-1.5 h-4 bg-syntax-storage animate-cursor ml-0.5"></span>
             </div>
           </div>
 
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-2xl font-sans">
-            Pursuing <span className="text-slate-200 font-medium">M.Tech in Advanced Computing</span> at{" "}
-            <span className="text-purple-300 font-medium">MANIT Bhopal</span> &amp; B.Tech CSE (AI/ML) Graduate from{" "}
-            <span className="text-sky-300 font-medium">Karnavati University (CGPA: 8.72)</span>. Industry experience as a Full Stack Intern at Logion Solutions building Nuxt.js, React Native, and enterprise CRM solutions.
+          <p className="text-editor-textSecondary text-sm sm:text-base leading-relaxed font-sans">
+            Pursuing <span className="text-editor-textHeading font-medium">M.Tech in Advanced Computing</span> at{" "}
+            <span className="text-syntax-variable font-medium">MANIT Bhopal</span> &amp; B.Tech CSE (AI/ML) Graduate from{" "}
+            <span className="text-syntax-type font-medium">Karnavati University (CGPA: 8.72)</span>. Industry internship experience at Logion Solutions building Nuxt.js, React Native, and enterprise CRM solutions.
           </p>
 
-          {/* Simulated IDE Code Object Box */}
-          <div className="rounded-xl border border-editor-border bg-editor-card/80 p-4 font-code text-xs sm:text-sm shadow-xl relative overflow-hidden group">
-            <div className="absolute top-2 right-3 text-[10px] text-slate-500 uppercase tracking-widest">
-              developer.ts
+          {/* VS Code Theme Code Block */}
+          <div className="rounded-lg border border-editor-border bg-editor-card p-4 font-code text-xs sm:text-sm shadow-vscode relative">
+            <div className="flex items-center justify-between pb-2 mb-3 border-b border-editor-border text-[11px] text-editor-textMuted">
+              <span className="flex items-center gap-1.5">
+                <Terminal className="w-3.5 h-3.5 text-syntax-storage" />
+                <span>developer_profile.ts</span>
+              </span>
+              <span>TypeScript</span>
             </div>
-            <div className="text-slate-400 space-y-1">
+            <div className="space-y-1 text-editor-textPrimary">
               <div>
-                <span className="text-syntax-keyword">const</span>{" "}
-                <span className="text-syntax-func">yash</span>:{" "}
-                <span className="text-syntax-keyword">Engineer</span> = &#123;
+                <span className="text-syntax-storage">const</span>{" "}
+                <span className="text-syntax-variable">yash</span>:{" "}
+                <span className="text-syntax-type">Engineer</span> = &#123;
               </div>
               <div className="pl-4">
                 <span className="text-syntax-variable">postgrad</span>:{" "}
@@ -147,46 +169,45 @@ export default function HomePage() {
               </div>
               <div className="pl-4">
                 <span className="text-syntax-variable">published</span>:{" "}
-                <span className="text-syntax-string">"IEEE AIEI 2026 (SafeRoute)"</span>,
+                <span className="text-syntax-string">"IEEE AIEI 2026 (SafeRoute Navigation)"</span>,
               </div>
               <div className="pl-4">
                 <span className="text-syntax-variable">stack</span>: [
                 <span className="text-syntax-string">"Flutter"</span>,{" "}
                 <span className="text-syntax-string">"React Native"</span>,{" "}
                 <span className="text-syntax-string">"Next.js"</span>,{" "}
-                <span className="text-syntax-string">"Node.js"</span>,{" "}
                 <span className="text-syntax-string">"Python"</span>],
               </div>
               <div className="pl-4">
                 <span className="text-syntax-variable">availableForHire</span>:{" "}
-                <span className="text-syntax-keyword">true</span>
+                <span className="text-syntax-storage">true</span>
               </div>
               <div>&#125;;</div>
             </div>
           </div>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-1">
             <button
               onClick={handleDownloadResume}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-medium text-sm transition shadow-lg shadow-sky-500/25 group font-code"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#0E639C] hover:bg-[#1177BB] text-white font-medium text-xs font-code transition shadow-sm cursor-pointer"
             >
-              <FileDown className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+              <FileDown className="w-4 h-4 text-syntax-string" />
               <span>Download Resume (PDF)</span>
             </button>
 
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-700 font-medium text-sm transition font-code"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded bg-editor-cardElevated hover:bg-editor-hover text-editor-textPrimary border border-editor-border font-medium text-xs font-code transition"
             >
-              <FolderGit2 className="w-4 h-4 text-emerald-400" />
+              <FolderGit2 className="w-4 h-4 text-syntax-type" />
               <span>Explore Projects</span>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5 text-editor-textSecondary" />
             </Link>
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 border border-slate-800/80 text-sm transition font-code"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary hover:text-editor-textPrimary border border-editor-border text-xs font-code transition"
             >
               <span>Connect</span>
             </Link>
@@ -195,119 +216,113 @@ export default function HomePage() {
 
         {/* Right Column: Profile Card */}
         <div className="lg:col-span-5 flex justify-center">
-          <div className="relative w-full max-w-sm">
-            {/* Ambient Background Glow */}
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-sky-500 to-purple-600 opacity-30 blur-xl group-hover:opacity-50 transition duration-1000"></div>
-
-            <div className="relative rounded-2xl border border-editor-border bg-editor-card p-6 shadow-2xl space-y-6">
-              {/* Window Controls Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-editor-border/60">
-                <div className="flex items-center space-x-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-                </div>
-                <span className="text-[11px] font-code text-slate-400">yash_profile.png</span>
+          <div className="w-full max-w-sm rounded-lg border border-editor-border bg-editor-card p-5 shadow-vscode space-y-5">
+            {/* Window Controls Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-editor-border">
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ED6A5E]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#F5BF4F]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#62C554]" />
               </div>
+              <span className="text-[11px] font-code text-editor-textMuted">yash_profile.png</span>
+            </div>
 
-              {/* Avatar Image */}
-              <div className="relative mx-auto w-48 h-48 sm:w-56 sm:h-56 rounded-xl overflow-hidden border border-slate-800/80 bg-slate-900/90 shadow-inner group">
-                <Image
-                  src={PERSONAL_INFO.avatar}
-                  alt={PERSONAL_INFO.name}
-                  fill
-                  sizes="(max-width: 768px) 192px, 224px"
-                  priority
-                  className="object-cover object-center group-hover:scale-105 transition duration-500"
-                />
-              </div>
+            {/* Avatar Image */}
+            <div className="relative mx-auto w-44 h-44 sm:w-52 sm:h-52 rounded-md overflow-hidden border border-editor-border bg-editor-bg">
+              <Image
+                src={PERSONAL_INFO.avatar}
+                alt={PERSONAL_INFO.name}
+                fill
+                sizes="(max-width: 768px) 176px, 208px"
+                priority
+                className="object-cover object-center"
+              />
+            </div>
 
-              {/* Identity & Tags */}
-              <div className="text-center space-y-1">
-                <h3 className="text-lg font-bold text-white font-sans">
-                  {PERSONAL_INFO.name}
-                </h3>
-                <p className="text-xs text-sky-400 font-code font-medium">
-                  MANIT Bhopal &bull; UIT Karnavati
-                </p>
-              </div>
+            {/* Identity & Tags */}
+            <div className="text-center space-y-1">
+              <h3 className="text-base font-bold text-editor-textHeading font-sans">
+                {PERSONAL_INFO.name}
+              </h3>
+              <p className="text-xs text-syntax-variable font-code">
+                MANIT Bhopal &bull; UIT Karnavati
+              </p>
+            </div>
 
-              {/* Pill Tech Badges */}
-              <div className="flex flex-wrap justify-center gap-1.5 pt-1">
-                {["Flutter", "React Native", "Next.js", "Python", "Nuxt.js", "AI/ML"].map(
-                  (tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-code text-slate-300"
-                    >
-                      {tag}
-                    </span>
-                  )
-                )}
-              </div>
+            {/* Clean Tech Badges */}
+            <div className="flex flex-wrap justify-center gap-1.5 pt-1">
+              {["Flutter", "React Native", "Next.js", "Python", "Nuxt.js", "AI/ML"].map(
+                (tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 rounded bg-editor-bg border border-editor-border text-[11px] font-code text-editor-textSecondary"
+                  >
+                    {tag}
+                  </span>
+                )
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Counter Bar */}
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {PERSONAL_INFO.stats.map((stat, idx) => (
           <div
             key={idx}
-            className="rounded-xl border border-editor-border bg-editor-card/60 p-4 text-center hover:border-sky-500/40 transition group"
+            className="rounded-lg border border-editor-border bg-editor-card p-4 text-center hover:border-editor-borderFocus transition"
           >
-            <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-purple-400 font-code">
+            <div className="text-2xl font-bold text-syntax-variable font-code">
               {stat.value}
             </div>
-            <div className="text-xs text-slate-400 mt-1 font-sans font-medium">
+            <div className="text-xs text-editor-textMuted mt-1 font-sans">
               {stat.label}
             </div>
           </div>
         ))}
       </section>
 
-      {/* Spotify "Now Playing" Dedicated Section */}
+      {/* Spotify "Now Playing" Section */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between border-b border-editor-border pb-3">
+        <div className="flex items-center justify-between border-b border-editor-border pb-2.5">
           <div className="flex items-center gap-2 text-xs font-code text-[#1DB954]">
-            <Music2 className="w-4 h-4 animate-bounce" />
-            <span>SPOTIFY_NOW_PLAYING.TSX</span>
+            <Music2 className="w-4 h-4" />
+            <span>SPOTIFY_SERVICE.TS</span>
           </div>
-          <div className="flex items-center gap-2 text-[11px] font-code text-slate-400">
-            <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-1.5 text-[11px] font-code text-editor-textMuted">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954]" />
             <span>Live Audio Frequency</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           {/* Informational description panel */}
-          <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-editor-border bg-editor-card/40 p-6 sm:p-8 space-y-4">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-xs font-code">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Spotify Web API Integration</span>
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-lg border border-editor-border bg-editor-card p-5 sm:p-6 space-y-4">
+            <div className="space-y-2.5">
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-editor-bg border border-editor-border text-[#1DB954] text-[11px] font-code">
+                <span>Spotify Web API &bull; OAuth 2.0 PKCE</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white font-sans">
+              <h2 className="text-xl sm:text-2xl font-bold text-editor-textHeading font-sans">
                 Real-Time Listening Activity
               </h2>
-              <p className="text-slate-400 text-sm leading-relaxed font-sans">
-                Music powers my engineering workflow. This live component queries my Spotify account via OAuth 2.0 to display the track currently spinning through my headphones, or the most recent tune if I'm currently away from the keyboard.
+              <p className="text-editor-textSecondary text-xs sm:text-sm leading-relaxed font-sans">
+                Music directly influences focus and code flow. This component queries my active Spotify playback via serverless API routes to broadcast what's currently spinning through my headphones.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-code border-t border-editor-border/40">
-              <div className="flex items-center gap-2 text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Now Playing Detection</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 text-xs font-code border-t border-editor-border">
+              <div className="flex items-center gap-2 text-editor-textSecondary">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1DB954] flex-shrink-0" />
+                <span>Live Status Sync</span>
               </div>
-              <div className="flex items-center gap-2 text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Last Played Fallback</span>
+              <div className="flex items-center gap-2 text-editor-textSecondary">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1DB954] flex-shrink-0" />
+                <span>Last Played Cache</span>
               </div>
-              <div className="flex items-center gap-2 text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>20s Live Polling</span>
+              <div className="flex items-center gap-2 text-editor-textSecondary">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1DB954] flex-shrink-0" />
+                <span>15s Interval Polling</span>
               </div>
             </div>
           </div>
@@ -319,75 +334,85 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Projects Grid (Fetched dynamically from GitHub with REAL stars and forks) */}
-      <section className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-editor-border pb-4">
+      {/* Featured Projects Grid */}
+      <section className="space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-editor-border pb-3">
           <div>
-            <div className="flex items-center gap-2 text-xs font-code text-sky-400 mb-1">
+            <div className="flex items-center gap-2 text-xs font-code text-syntax-storage mb-1">
               <Code2 className="w-4 h-4" />
-              <span>GITHUB_TOP_REPOSITORIES.JSON</span>
+              <span>TOP_REPOSITORIES.JSON</span>
               {isLiveGitHub && (
-                <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded-full ml-1 font-normal">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  live github sync
+                <span className="inline-flex items-center gap-1 text-[10px] text-syntax-type bg-editor-bg border border-editor-border px-1.5 py-0.2 rounded font-code">
+                  live sync
                 </span>
               )}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-editor-textHeading tracking-tight">
               Top Starred GitHub Repositories
             </h2>
           </div>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 text-xs font-code text-sky-400 hover:text-sky-300 font-medium group"
+            className="inline-flex items-center gap-1.5 text-xs font-code text-syntax-storage hover:text-syntax-variable font-medium transition"
           >
             <span>View All Repositories ({ALL_REPOSITORIES.length}+)</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="flex flex-col justify-between rounded-xl border border-editor-border bg-editor-card/70 p-5 hover:border-sky-500/40 hover:bg-slate-900/60 transition group shadow-lg"
+              className="flex flex-col justify-between rounded-lg border border-editor-border bg-editor-card p-5 hover:border-editor-borderFocus transition group shadow-vscode"
             >
               <div className="space-y-3">
+                {/* Header info */}
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-code px-2 py-0.5 rounded bg-sky-950/60 border border-sky-800/40 text-sky-300 font-semibold">
-                    {project.category}
-                  </span>
-                  <div className="flex items-center gap-3 text-xs text-slate-400 font-code">
+                  <div className="flex items-center gap-1.5">
                     <span
-                      className="flex items-center gap-1 font-semibold text-amber-300"
-                      title={`${project.stars} real stars on GitHub`}
+                      className="w-2.5 h-2.5 rounded-full"
+                      style={{ backgroundColor: getLanguageColor(project.language) }}
+                    />
+                    <span className="text-[11px] font-code text-editor-textSecondary">
+                      {project.language}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 text-xs text-editor-textMuted font-code">
+                    <span
+                      className="flex items-center gap-1 font-medium text-syntax-func"
+                      title={`${project.stars} stars`}
                     >
-                      <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
+                      <Star className="w-3.5 h-3.5 fill-current" />
                       {project.stars}
                     </span>
                     <span
-                      className="flex items-center gap-1 font-semibold text-purple-300"
-                      title={`${project.forks} real forks on GitHub`}
+                      className="flex items-center gap-1 font-medium text-syntax-variable"
+                      title={`${project.forks} forks`}
                     >
-                      <GitFork className="w-3.5 h-3.5 text-purple-400" />
+                      <GitFork className="w-3.5 h-3.5" />
                       {project.forks}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-bold text-white group-hover:text-sky-400 transition font-sans">
+                {/* Repo title */}
+                <h3 className="text-base font-bold text-editor-textHeading group-hover:text-syntax-variable transition font-sans">
                   {project.title}
                 </h3>
 
-                <p className="text-slate-400 text-xs leading-relaxed line-clamp-3">
+                {/* Description */}
+                <p className="text-editor-textSecondary text-xs leading-relaxed line-clamp-3">
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-1.5 pt-1">
+                {/* Topics / Tags */}
+                <div className="flex flex-wrap gap-1 pt-1">
                   {project.topics.slice(0, 3).map((topic) => (
                     <span
                       key={topic}
-                      className="text-[10px] font-code text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800"
+                      className="text-[10px] font-code text-editor-textMuted bg-editor-bg px-2 py-0.5 rounded border border-editor-border"
                     >
                       #{topic}
                     </span>
@@ -395,10 +420,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-5 mt-4 border-t border-editor-border/50 text-xs font-code">
+              {/* Bottom Actions */}
+              <div className="flex items-center justify-between pt-4 mt-4 border-t border-editor-border text-xs font-code">
                 <Link
                   href={`/projects/${project.name}`}
-                  className="text-sky-400 hover:underline font-medium"
+                  className="text-syntax-storage hover:text-syntax-variable font-medium transition"
                 >
                   Inspect details &rarr;
                 </Link>
@@ -407,7 +433,7 @@ export default function HomePage() {
                   href={project.html_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-slate-400 hover:text-slate-200 transition"
+                  className="inline-flex items-center gap-1 text-editor-textMuted hover:text-editor-textPrimary transition"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>GitHub</span>
