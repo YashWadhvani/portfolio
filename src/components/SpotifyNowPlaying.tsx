@@ -78,10 +78,18 @@ export default function SpotifyNowPlaying({
             }
         };
         fetchSnapshot();
-        const interval = window.setInterval(fetchSnapshot, 60_000);
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") fetchSnapshot();
+        };
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        const interval = window.setInterval(fetchSnapshot, 30_000);
         return () => {
             mounted = false;
             window.clearInterval(interval);
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange,
+            );
         };
     }, []);
 

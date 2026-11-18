@@ -23,7 +23,7 @@ const endpoint = process.env.PRESENCE_URL || "http://localhost:3000/api/presence
 const token = String(process.env.PRESENCE_PUBLISH_TOKEN || "")
     .trim()
     .replace(/^("|')(.*)\1$/, "$2");
-const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 60000);
+const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 5000);
 const configPath = path.resolve(process.cwd(), "scripts", "presence-apps.json");
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
@@ -96,22 +96,28 @@ async function publish(activity) {
     }
 }
 
+let lastSignature = "";
+
 async function update() {
     try {
         const window = await activeWindow();
-        const activity = getActivity(window);
-        if (!activity) {
-            console.log(`[presence] ignored: ${window?.owner?.name || "unknown process"}`);
-            return;
-        }
+        const activity = getActivity(window) || {
+            app: "Away",
+            icon: "🌙",
+            detail: "No tracked activity",
+        };
+        const signature = `${activity.app}|${activity.detail}|${activity.icon}`;
+
+        if (signature === lastSignature) return;
 
         await publish(activity);
+        lastSignature = signature;
         console.log(`[presence] ${activity.app}: ${activity.detail}`);
     } catch (error) {
         console.error(`[presence] ${error.message}`);
     }
 }
 
-console.log(`[presence] publishing to ${endpoint} every ${intervalMs / 1000}s`);
+console.log(`[presence] watching activity; publishing only on changes`);
 await update();
 setInterval(update, intervalMs);

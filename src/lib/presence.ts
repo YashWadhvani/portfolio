@@ -5,6 +5,7 @@ export interface PresenceActivity {
   detail: string;
   icon: string;
   source: "spotify" | "github" | "desktop" | "default";
+  status?: PresenceStatus;
 }
 
 export type PresenceStatus = "online" | "away";
@@ -16,7 +17,7 @@ interface StoredPresence extends PresenceActivity {
 let localPresence: StoredPresence | null = null;
 
 const PRESENCE_KEY = "portfolio:presence";
-const PRESENCE_TTL_SECONDS = 180;
+const PRESENCE_TTL_SECONDS = 600;
 
 function normalizeSecret(value: string | undefined) {
   return String(value || "")
@@ -91,7 +92,13 @@ export async function getPresence() {
 
   try {
     const published = await readPublishedPresence();
-    if (published) return { activity: published, spotify, status: "online" as const };
+    if (published) {
+      return {
+        activity: published,
+        spotify,
+        status: (published.status === "away" ? "away" : "online") as PresenceStatus,
+      };
+    }
   } catch {
     // Continue with inferred activity if the optional persistence service is unavailable.
   }

@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       detail: String(body.detail || "").trim().slice(0, 160),
       icon: String(body.icon || "💻").slice(0, 4),
       source: "desktop",
+      status: String(body.app || "").trim().toLowerCase() === "away" ? "away" : "online",
     };
 
     if (!activity.app || !activity.detail) {
