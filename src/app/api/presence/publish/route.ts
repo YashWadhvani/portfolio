@@ -44,6 +44,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Presence publish failed:", error);
-    return NextResponse.json({ error: "Presence storage is unavailable" }, { status: 502 });
+    return NextResponse.json(
+      {
+        error: "Presence storage is unavailable",
+        detail: error instanceof Error ? error.message : "Check KV_REST_API_URL and KV_REST_API_TOKEN",
+      },
+      { status: 502 },
+    );
   }
 }

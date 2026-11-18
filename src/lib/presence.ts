@@ -20,9 +20,15 @@ const PRESENCE_TTL_SECONDS = 120;
 
 function getKvConfig() {
   return {
-    url: process.env.KV_REST_API_URL,
+    url: process.env.KV_REST_API_URL?.replace(/\/+$/, ""),
     token: process.env.KV_REST_API_TOKEN,
   };
+}
+
+async function throwIfFailed(response: Response, operation: string) {
+  if (response.ok) return;
+  const details = (await response.text()).slice(0, 240);
+  throw new Error(`Upstash ${operation} failed (${response.status}): ${details}`);
 }
 
 async function readPublishedPresence(): Promise<PresenceActivity | null> {
@@ -30,11 +36,11 @@ async function readPublishedPresence(): Promise<PresenceActivity | null> {
   let stored: StoredPresence | null = localPresence;
 
   if (url && token) {
-    const response = await fetch(`${url}/get/${PRESENCE_KEY}`, {
+    const response = await fetch(`${url}/get/${encodeURIComponent(PRESENCE_KEY)}`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
-    if (!response.ok) throw new Error(`Upstash presence read failed: ${response.status}`);
+    await throwIfFailed(response, "presence read");
     const result = await response.json();
     stored = result.result ? JSON.parse(result.result) : null;
   }
@@ -54,11 +60,11 @@ export async function publishPresence(activity: PresenceActivity) {
   const { url, token } = getKvConfig();
   if (url && token) {
     const encodedValue = encodeURIComponent(JSON.stringify(stored));
-    const response = await fetch(`${url}/set/${PRESENCE_KEY}/${encodedValue}/EX/${PRESENCE_TTL_SECONDS}`, {
+    const response = await fetch(`${url}/set/${encodeURIComponent(PRESENCE_KEY)}/${encodedValue}/EX/${PRESENCE_TTL_SECONDS}`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
-    if (!response.ok) throw new Error(`Upstash presence write failed: ${response.status}`);
+    await throwIfFailed(response, "presence write");
   }
 }
 
