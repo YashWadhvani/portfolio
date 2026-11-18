@@ -16,7 +16,7 @@ interface StoredPresence extends PresenceActivity {
 let localPresence: StoredPresence | null = null;
 
 const PRESENCE_KEY = "portfolio:presence";
-const PRESENCE_TTL_SECONDS = 120;
+const PRESENCE_TTL_SECONDS = 180;
 
 function normalizeSecret(value: string | undefined) {
   return String(value || "")

@@ -23,7 +23,7 @@ const endpoint = process.env.PRESENCE_URL || "http://localhost:3000/api/presence
 const token = String(process.env.PRESENCE_PUBLISH_TOKEN || "")
     .trim()
     .replace(/^("|')(.*)\1$/, "$2");
-const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 15000);
+const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 60000);
 const configPath = path.resolve(process.cwd(), "scripts", "presence-apps.json");
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
@@ -104,6 +104,7 @@ async function update() {
             console.log(`[presence] ignored: ${window?.owner?.name || "unknown process"}`);
             return;
         }
+
         await publish(activity);
         console.log(`[presence] ${activity.app}: ${activity.detail}`);
     } catch (error) {
