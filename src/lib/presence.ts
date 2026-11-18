@@ -18,10 +18,17 @@ let localPresence: StoredPresence | null = null;
 const PRESENCE_KEY = "portfolio:presence";
 const PRESENCE_TTL_SECONDS = 120;
 
+function normalizeSecret(value: string | undefined) {
+  return String(value || "")
+    .trim()
+    .replace(/^(["'])(.*)\1$/, "$2")
+    .replace(/\/+$/, "");
+}
+
 function getKvConfig() {
   return {
-    url: process.env.KV_REST_API_URL?.replace(/\/+$/, ""),
-    token: process.env.KV_REST_API_TOKEN,
+    url: normalizeSecret(process.env.KV_REST_API_URL),
+    token: normalizeSecret(process.env.KV_REST_API_TOKEN),
   };
 }
 
