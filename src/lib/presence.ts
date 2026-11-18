@@ -27,8 +27,12 @@ function normalizeSecret(value: string | undefined) {
 
 function getKvConfig() {
   return {
-    url: normalizeSecret(process.env.KV_REST_API_URL),
-    token: normalizeSecret(process.env.KV_REST_API_TOKEN),
+    url: normalizeSecret(
+      process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
+    ),
+    token: normalizeSecret(
+      process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
+    ),
   };
 }
 
