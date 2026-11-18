@@ -1,207 +1,301 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Music2, ExternalLink, Disc3, LogIn } from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Disc3, ExternalLink, Music2 } from "lucide-react";
+import { PERSONAL_INFO } from "@/data/portfolioData";
 
 export interface SpotifyTrack {
-  isPlaying: boolean;
-  isLastPlayed?: boolean;
-  title: string;
-  artist: string;
-  album: string;
-  albumImageUrl: string;
-  songUrl: string;
-  isDemo?: boolean;
-  needsAuth?: boolean;
-  hasClientId?: boolean;
+    isPlaying: boolean;
+    isLastPlayed?: boolean;
+    title: string;
+    artist: string;
+    album: string;
+    albumImageUrl: string;
+    songUrl: string;
+    progressMs?: number;
+    durationMs?: number;
+    playedAt?: string;
+    isDemo?: boolean;
+    needsAuth?: boolean;
+}
+
+interface PresenceActivity {
+    app: string;
+    detail: string;
+    icon: string;
+    source: "spotify" | "github" | "desktop" | "default";
+}
+
+interface PresenceResponse {
+    activity: PresenceActivity;
+    spotify: SpotifyTrack;
+    status: "online" | "away";
 }
 
 interface SpotifyNowPlayingProps {
-  variant?: "card" | "ticker";
+    variant?: "card" | "ticker";
 }
 
-export default function SpotifyNowPlaying({
-  variant = "card",
-}: SpotifyNowPlayingProps) {
-  const [data, setData] = useState<SpotifyTrack>({
+const initialTrack: SpotifyTrack = {
     isPlaying: false,
     isLastPlayed: true,
-    title: "Starboy",
-    artist: "The Weeknd, Daft Punk",
-    album: "Starboy",
-    albumImageUrl:
-      "https://i.scdn.co/image/ab67616d0000b2734718e2b124f79258be7bc452",
-    songUrl: "https://open.spotify.com/track/7MXVkk9YM5IZxh0WSlVIh0",
-    isDemo: true,
-    needsAuth: false,
-  });
+    title: "Loading listening data…",
+    artist: "Spotify activity",
+    album: "Fetching the latest snapshot",
+    albumImageUrl: "",
+    songUrl: "https://open.spotify.com",
+};
 
-  const fetchSpotify = async () => {
-    try {
-      const res = await fetch("/api/spotify");
-      if (res.ok) {
-        const json = await res.json();
-        setData(json);
-      }
-    } catch (err) {
-      // Fallback retained
-    }
-  };
+const initialPresence: PresenceResponse = {
+    activity: {
+        app: "Loading presence…",
+        detail: "Checking current activity",
+        icon: "…",
+        source: "default",
+    },
+    spotify: initialTrack,
+    status: "away",
+};
 
-  useEffect(() => {
-    fetchSpotify();
-    const interval = setInterval(fetchSpotify, 15000);
-    return () => clearInterval(interval);
-  }, []);
+export default function SpotifyNowPlaying({
+    variant = "card",
+}: SpotifyNowPlayingProps) {
+    const [presence, setPresence] = useState<PresenceResponse>(initialPresence);
+    const [loading, setLoading] = useState(true);
+    const { activity, spotify: data, status } = presence;
 
-  // Ticker variant for Bottom Status Bar
-  if (variant === "ticker") {
-    return (
-      <a
-        href={data.songUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-[#0E639C] transition text-[11px] font-code text-white max-w-[210px] truncate"
-        title={`${data.isPlaying ? "Now Playing" : "Last Played"}: ${data.title} - ${data.artist}`}
-      >
-        <span
-          className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-            data.isPlaying ? "bg-[#1DB954]" : "bg-white/60"
-          }`}
-        />
-        <Music2 className="w-3 h-3 text-[#1DB954] flex-shrink-0" />
-        <span className="truncate">
-          {data.title} &bull; {data.artist}
-        </span>
-      </a>
-    );
-  }
+    useEffect(() => {
+        let mounted = true;
+        const fetchSnapshot = async () => {
+            try {
+                const response = await fetch("/api/presence", {
+                    cache: "no-store",
+                });
+                if (response.ok && mounted) setPresence(await response.json());
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        };
+        fetchSnapshot();
+        const interval = window.setInterval(fetchSnapshot, 60_000);
+        return () => {
+            mounted = false;
+            window.clearInterval(interval);
+        };
+    }, []);
 
-  // Full Card Variant (VS Code Extension aesthetic)
-  return (
-    <div className="rounded-lg border border-editor-border bg-editor-card p-5 shadow-vscode relative overflow-hidden group">
-      {/* Header Row */}
-      <div className="flex items-center justify-between pb-3.5 border-b border-editor-border">
-        <div className="flex items-center gap-2">
-          {/* Official Spotify Icon */}
-          <svg
-            className="w-4 h-4 text-[#1DB954] flex-shrink-0 fill-current"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.307c-.216.353-.675.467-1.028.25-2.817-1.722-6.363-2.112-10.54-1.157-.402.092-.803-.16-.895-.562-.092-.403.16-.804.562-.896 4.571-1.045 8.492-.596 11.646 1.336.353.217.468.676.255 1.029zm1.467-3.262c-.272.443-.852.584-1.295.312-3.225-1.982-8.14-2.556-11.954-1.398-.498.152-1.028-.135-1.18-.633-.151-.498.136-1.028.634-1.18 4.364-1.325 9.782-.684 13.483 1.593.443.272.585.852.312 1.306zm.126-3.41c-3.867-2.296-10.248-2.508-13.94-1.387-.594.18-1.226-.155-1.406-.75-.18-.593.156-1.226.75-1.406 4.24-1.288 11.283-1.037 15.727 1.601.533.316.707 1.01.391 1.543-.316.533-1.01.708-1.543.399z" />
-          </svg>
-          <span className="text-xs font-code font-medium tracking-wide text-editor-textSecondary">
-            SPOTIFY &bull; DEV AUDIO
-          </span>
-        </div>
-
-        {/* Status Badge */}
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-editor-bg border border-editor-border">
-          <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              data.isPlaying ? "bg-[#1DB954]" : "bg-editor-textMuted"
-            }`}
-          />
-          <span
-            className={`text-[10px] font-code uppercase tracking-wider font-semibold ${
-              data.isPlaying ? "text-[#1DB954]" : "text-editor-textMuted"
-            }`}
-          >
-            {data.isPlaying ? "Now Playing" : "Last Played"}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Track Details */}
-      <div className="flex items-center gap-4 pt-4">
-        {/* Album Cover */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded border border-editor-border bg-editor-bg flex-shrink-0 overflow-hidden">
-          {data.albumImageUrl ? (
-            <img
-              src={data.albumImageUrl}
-              alt={data.album}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-editor-bg text-editor-textMuted">
-              <Disc3 className="w-8 h-8" />
-            </div>
-          )}
-        </div>
-
-        {/* Track Title, Artist, Album */}
-        <div className="flex-1 min-w-0 space-y-1">
-          <a
-            href={data.songUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-base font-semibold text-editor-textHeading hover:text-[#1DB954] transition truncate block font-sans"
-            title={data.title}
-          >
-            {data.title}
-          </a>
-
-          <p className="text-xs text-syntax-variable truncate font-code" title={data.artist}>
-            {data.artist}
-          </p>
-
-          <p className="text-[11px] text-editor-textMuted truncate font-sans">
-            {data.album}
-          </p>
-
-          {/* Equalizer Audio Waves & Listen Link */}
-          <div className="pt-2 flex items-center justify-between">
-            <div className="flex items-end gap-1 h-3.5">
-              <span
-                className={`w-1 bg-[#1DB954] rounded-xs transition-all ${
-                  data.isPlaying ? "h-3 animate-[pulse_0.6s_ease-in-out_infinite]" : "h-1 bg-editor-textMuted/40"
-                }`}
-              />
-              <span
-                className={`w-1 bg-[#1DB954] rounded-xs transition-all ${
-                  data.isPlaying ? "h-3.5 animate-[pulse_0.9s_ease-in-out_infinite]" : "h-1.5 bg-editor-textMuted/40"
-                }`}
-              />
-              <span
-                className={`w-1 bg-[#1DB954] rounded-xs transition-all ${
-                  data.isPlaying ? "h-2 animate-[pulse_0.7s_ease-in-out_infinite]" : "h-1 bg-editor-textMuted/40"
-                }`}
-              />
-              <span
-                className={`w-1 bg-[#1DB954] rounded-xs transition-all ${
-                  data.isPlaying ? "h-3 animate-[pulse_0.8s_ease-in-out_infinite]" : "h-2 bg-editor-textMuted/40"
-                }`}
-              />
-            </div>
-
+    if (variant === "ticker") {
+        return (
             <a
-              href={data.songUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-[11px] font-code text-editor-textSecondary hover:text-[#1DB954] transition"
+                href={data.songUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${data.isPlaying ? "Now playing" : "Last played"}: ${data.title} by ${data.artist}`}
+                className="flex max-w-[210px] items-center gap-1.5 truncate rounded px-1.5 py-0.5 text-[11px] font-code text-white transition hover:bg-[#0E639C]"
             >
-              <span>Listen</span>
-              <ExternalLink className="w-3 h-3" />
+                <span
+                    className={`h-1.5 w-1.5 shrink-0 rounded-full ${data.isPlaying ? "bg-[#1DB954]" : "bg-white/60"}`}
+                />
+                <Music2 className="h-3 w-3 shrink-0 text-[#1DB954]" />
+                <span className="truncate">
+                    {loading
+                        ? "Loading Spotify…"
+                        : `${data.title} • ${data.artist}`}
+                </span>
             </a>
-          </div>
-        </div>
-      </div>
+        );
+    }
 
-      {/* 1-Click Connect Button if refresh token is needed */}
-      {(data.needsAuth || data.isDemo) && (
-        <div className="mt-4 pt-3 border-t border-editor-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-editor-bg/60 -mx-5 -mb-5 px-5 py-3">
-          <div className="text-[11px] font-code text-editor-textSecondary">
-            <span>Connect Spotify to broadcast your real-time tracks:</span>
-          </div>
-          <a
-            href="/api/spotify/login"
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold text-xs font-code transition"
-          >
-            <LogIn className="w-3.5 h-3.5" />
-            <span>Login with Spotify</span>
-          </a>
+    if (loading) {
+        return (
+            <div
+                className="grid grid-cols-1 gap-4 lg:grid-cols-2"
+                aria-label="Loading current activity"
+                aria-busy="true"
+            >
+                <div className="h-64 animate-pulse rounded-lg border border-editor-border bg-editor-card p-5" />
+                <div className="h-64 animate-pulse rounded-lg border border-editor-border bg-editor-card p-5" />
+            </div>
+        );
+    }
+
+    const isOnline = status === "online";
+
+    return (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {/* Desktop presence card */}
+            <section
+                className="rounded-lg border border-editor-border bg-editor-card p-5 shadow-vscode"
+                aria-labelledby="desktop-activity-heading"
+            >
+                <div className="flex items-start justify-between gap-3 border-b border-editor-border pb-3">
+                    <div>
+                        <p className="text-[10px] font-code uppercase tracking-[0.18em] text-editor-textMuted">
+                            DESKTOP_ACTIVITY
+                        </p>
+                        <h2
+                            id="desktop-activity-heading"
+                            className="mt-1 font-sans text-lg font-bold text-editor-textHeading"
+                        >
+                            Current activity
+                        </h2>
+                    </div>
+                    <span
+                        className={`flex shrink-0 items-center gap-1.5 rounded-full border border-editor-border bg-editor-bg px-2 py-1 text-[10px] font-code uppercase tracking-wider ${isOnline ? "text-[#1DB954]" : "text-editor-textMuted"}`}
+                    >
+                        <span
+                            className={`h-1.5 w-1.5 rounded-full ${isOnline ? "bg-[#1DB954] shadow-[0_0_8px_#1DB954]" : "bg-editor-textMuted"}`}
+                        />
+                        {isOnline ? "Online" : "Away"}
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-3 pt-5">
+                    <div className="relative shrink-0">
+                        <Image
+                            src={PERSONAL_INFO.avatar}
+                            alt={PERSONAL_INFO.name}
+                            width={64}
+                            height={64}
+                            className="h-16 w-16 rounded-full border-2 border-editor-border object-cover"
+                        />
+                        <span
+                            className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-editor-card ${isOnline ? "bg-[#1DB954]" : "bg-editor-textMuted"}`}
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="truncate font-sans font-bold text-editor-textHeading">
+                            {PERSONAL_INFO.name}
+                        </p>
+                        <p className="text-xs text-editor-textMuted">
+                            {PERSONAL_INFO.title.split("|")[0].trim()}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="mt-5 rounded-md border border-editor-border bg-editor-bg p-3">
+                    <p className="mb-2 text-[10px] font-code uppercase tracking-widest text-editor-textMuted">
+                        {isOnline ? "Activity" : "Last activity"}
+                    </p>
+                    <div className="flex items-center gap-3">
+                        <span
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-[#007ACC]/20 text-2xl"
+                            aria-hidden="true"
+                        >
+                            {activity.icon}
+                        </span>
+                        <div className="min-w-0">
+                            <p className="truncate font-sans font-semibold text-editor-textHeading">
+                                {activity.app}
+                            </p>
+                            <p className="truncate text-xs text-editor-textSecondary">
+                                {activity.detail}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p className="mt-4 text-[11px] font-code text-editor-textMuted">
+                    {isOnline
+                        ? "Desktop companion connected"
+                        : "Desktop companion is offline"}
+                </p>
+            </section>
+
+            {/* Spotify card */}
+            <section
+                className="rounded-lg border border-editor-border bg-editor-card p-5 shadow-vscode"
+                aria-labelledby="spotify-activity-heading"
+            >
+                <div className="flex items-start justify-between gap-3 border-b border-editor-border pb-3">
+                    <div>
+                        <p className="flex items-center gap-1.5 text-[10px] font-code uppercase tracking-[0.18em] text-[#1DB954]">
+                            <Music2 className="h-3 w-3" />
+                            SPOTIFY_ACTIVITY
+                        </p>
+                        <h2
+                            id="spotify-activity-heading"
+                            className="mt-1 font-sans text-lg font-bold text-editor-textHeading"
+                        >
+                            {data.isPlaying ? "Now playing" : "Last played"}
+                        </h2>
+                    </div>
+                    <span className="text-[10px] font-code text-editor-textMuted">
+                        60s cache
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-4 pt-5">
+                    <div
+                        className={`relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-editor-border bg-editor-bg shadow-vscode sm:h-32 sm:w-32 ${data.isPlaying ? "animate-[spin_12s_linear_infinite]" : ""}`}
+                    >
+                        {data.albumImageUrl ? (
+                            <img
+                                src={data.albumImageUrl}
+                                alt={`${data.album} album artwork`}
+                                className="h-full w-full object-cover"
+                            />
+                        ) : (
+                            <div className="flex h-full w-full items-center justify-center text-editor-textMuted">
+                                <Disc3 className="h-10 w-10" />
+                            </div>
+                        )}
+                        <span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-editor-card bg-[#1DB954]" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-code uppercase tracking-widest text-[#1DB954]">
+                            {data.isPlaying
+                                ? "Listening now"
+                                : "Playback stopped"}
+                        </p>
+                        <a
+                            href={data.songUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="block truncate font-sans text-lg font-bold text-editor-textHeading hover:text-[#1DB954]"
+                            aria-label={`Open ${data.title} on Spotify`}
+                        >
+                            {data.title}
+                        </a>
+                        <p className="truncate font-code text-xs text-syntax-variable">
+                            {data.artist}
+                        </p>
+                        <p className="truncate text-xs text-editor-textMuted">
+                            {data.album}
+                        </p>
+                        <div
+                            className="flex items-end gap-1 pt-3"
+                            aria-label={
+                                data.isPlaying ? "Playing" : "Playback stopped"
+                            }
+                        >
+                            {["h-2", "h-4", "h-3", "h-5"].map(
+                                (height, index) => (
+                                    <span
+                                        key={index}
+                                        className={`w-1 rounded-full ${data.isPlaying ? `animate-pulse bg-[#1DB954] ${height}` : "h-1 bg-editor-textMuted/50"}`}
+                                    />
+                                ),
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-5 flex items-center justify-between border-t border-editor-border pt-3 text-[11px] font-code text-editor-textMuted">
+                    <span>
+                        {data.isPlaying
+                            ? "Live playback"
+                            : "Disc stopped · last known track"}
+                    </span>
+                    <a
+                        href={data.songUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 hover:text-[#1DB954]"
+                    >
+                        Open Spotify <ExternalLink className="h-3 w-3" />
+                    </a>
+                </div>
+            </section>
         </div>
-      )}
-    </div>
-  );
+    );
 }

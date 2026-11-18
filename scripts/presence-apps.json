@@ -1,0 +1,53 @@
+{
+    "ignoredProcesses": [
+        "searchhost.exe",
+        "startmenuexperiencehost.exe",
+        "shellexperiencehost.exe",
+        "applicationframehost.exe",
+        "textinputhost.exe",
+        "lockapp.exe",
+        "dwm.exe",
+        "explorer.exe"
+    ],
+    "trackedApps": [
+        {
+            "processes": ["code.exe", "cursor.exe", "windsurf.exe"],
+            "app": "Visual Studio Code",
+            "icon": "💻",
+            "detailTemplate": "Working on {root}",
+            "titleMode": "root"
+        },
+        {
+            "processes": ["antigravity.exe", "antigravity"],
+            "app": "Antigravity",
+            "icon": "🚀",
+            "detailTemplate": "Working on {root}",
+            "titleMode": "root"
+        },
+        {
+            "processes": ["valorant-win64-shipping.exe", "valorant.exe"],
+            "app": "Valorant",
+            "icon": "🎮",
+            "detailTemplate": "Playing a match"
+        },
+        {
+            "processes": ["spotify.exe"],
+            "app": "Spotify",
+            "icon": "🎵",
+            "detailTemplate": "Listening to music"
+        },
+        {
+            "processes": ["discord.exe"],
+            "app": "Discord",
+            "icon": "💬",
+            "detailTemplate": "Hanging out on Discord"
+        },
+        {
+            "processes": ["chrome.exe", "msedge.exe", "firefox.exe"],
+            "app": "Web browser",
+            "icon": "🌐",
+            "detailTemplate": "Browsing {title}",
+            "titleMode": "title"
+        }
+    ]
+}

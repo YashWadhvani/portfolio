@@ -10,6 +10,9 @@ export interface ProjectItem {
   forks: number;
   html_url: string;
   homepage?: string;
+  demoUrl?: string;
+  screenshot?: string;
+  impact?: string[];
   featured?: boolean;
   category: "Full Stack" | "Mobile App" | "Frontend" | "Backend" | "AI/ML" | "Systems";
 }
@@ -85,8 +88,8 @@ export const PERSONAL_INFO = {
   githubUrl: "https://github.com/YashWadhvani",
   linkedinUrl: "https://www.linkedin.com/in/yash-wadhvani",
   resumeUrl: "/assets/YashWadhvani_Resume.pdf",
-  avatar: "/assets/YashBlob3.png",
-  secondaryAvatar: "/assets/YashBlob1.png",
+  avatar: "/assets/Yash.png",
+  secondaryAvatar: "/assets/YashBlob3.png",
   stats: [
     { label: "GitHub Repositories", value: "27+" },
     { label: "B.Tech CGPA", value: "8.72" },
@@ -312,7 +315,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
       },
       {
         name: "Prismic CMS",
-        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/framermotion/framermotion-original.svg",
+        icon: "https://github.com/devicons/devicon/blob/v2.18.0/icons/prisma/prisma-original.svg",
         level: "Proficient",
         category: "Tools",
       },
@@ -472,6 +475,8 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
     html_url: "https://github.com/YashWadhvani/code_snippet_library",
     featured: true,
     category: "Full Stack",
+    screenshot: "https://opengraph.githubassets.com/1/YashWadhvani/code_snippet_library",
+    impact: ["5 programming languages covered", "Searchable beginner-focused reference"],
   },
   {
     id: "wastelessbites",
@@ -488,6 +493,8 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
     html_url: "https://github.com/YashWadhvani/wastelessbites",
     featured: true,
     category: "Full Stack",
+    screenshot: "https://opengraph.githubassets.com/1/YashWadhvani/wastelessbites",
+    impact: ["Tracks household and restaurant inventory", "Expiry-aware food waste workflow"],
   },
   {
     id: "library-management-system",
@@ -564,6 +571,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
     stars: 0,
     forks: 0,
     html_url: "https://github.com/YashWadhvani/portfolio",
+    demoUrl: "https://yashwadhvani.vercel.app",
     featured: false,
     category: "Frontend",
   },
@@ -660,6 +668,8 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
     html_url: "https://github.com/YashWadhvani/saferoute_frontend",
     featured: false,
     category: "Mobile App",
+    screenshot: "https://opengraph.githubassets.com/1/YashWadhvani/saferoute_frontend",
+    impact: ["Risk-aware route planning", "Emergency SOS navigation concept"],
   },
   {
     id: "health-symptom-checker",

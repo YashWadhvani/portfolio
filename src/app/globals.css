@@ -10,192 +10,240 @@
 
 :root,
 .dark {
-  /* Surface colors */
-  --bg-editor: #1E1E1E;
-  --bg-sidebar: #252526;
-  --bg-card: #252526;
-  --bg-card-elevated: #2A2D2E;
-  --bg-activity-bar: #333333;
-  --activity-bar-fg: rgba(255, 255, 255, 0.6);
-  --activity-bar-active-fg: #FFFFFF;
-  --activity-bar-active-border: #FFFFFF;
-  --bg-title-bar: #323233;
-  --bg-active-tab: #1E1E1E;
-  --bg-inactive-tab: #2D2D2D;
-  --text-active-tab: #FFFFFF;
-  --text-inactive-tab: #969696;
-  
-  /* Borders */
-  --border-editor: #333333;
-  --border-subtle: #2D2D2D;
-  
-  /* Status bar (Iconic VS Code Blue) */
-  --bg-status: #007ACC;
-  --text-status: #FFFFFF;
-  
-  /* Typography */
-  --text-primary: #D4D4D4;
-  --text-secondary: #CCCCCC;
-  --text-muted: #858585;
-  --text-heading: #FFFFFF;
-  
-  /* Inputs & Insets */
-  --bg-input: #3C3C3C;
-  --border-input: #3C3C3C;
-  --text-input: #D4D4D4;
-  --bg-inset: #1E1E1E;
-  --bg-hover: #2A2D2E;
-  --bg-selection: #264F78;
-  
-  /* Syntax Highlighting: VS Code Dark+ */
-  --syntax-keyword: #C586C0;
-  --syntax-storage: #569CD6;
-  --syntax-func: #DCDCAA;
-  --syntax-string: #CE9178;
-  --syntax-variable: #9CDCFE;
-  --syntax-number: #B5CEA8;
-  --syntax-comment: #6A9955;
-  --syntax-type: #4EC9B0;
-  --syntax-tag: #569CD6;
-  
-  /* Buttons */
-  --btn-primary-bg: #0E639C;
-  --btn-primary-hover: #1177BB;
-  --btn-primary-text: #FFFFFF;
-  --btn-secondary-bg: #3A3D41;
-  --btn-secondary-hover: #45494E;
-  --btn-secondary-text: #FFFFFF;
-  
-  /* Grid & Shadows */
-  --grid-line-color: rgba(255, 255, 255, 0.025);
-  --scrollbar-track: #1E1E1E;
-  --scrollbar-thumb: #333333;
-  --scrollbar-thumb-hover: #4F4F4F;
-  --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.45);
+    /* Surface colors */
+    --bg-editor: #1e1e1e;
+    --bg-sidebar: #252526;
+    --bg-card: #252526;
+    --bg-card-elevated: #2a2d2e;
+    --bg-activity-bar: #333333;
+    --activity-bar-fg: rgba(255, 255, 255, 0.6);
+    --activity-bar-active-fg: #ffffff;
+    --activity-bar-active-border: #ffffff;
+    --bg-title-bar: #323233;
+    --bg-active-tab: #1e1e1e;
+    --bg-inactive-tab: #2d2d2d;
+    --text-active-tab: #ffffff;
+    --text-inactive-tab: #969696;
+
+    /* Borders */
+    --border-editor: #333333;
+    --border-subtle: #2d2d2d;
+
+    /* Status bar (Iconic VS Code Blue) */
+    --bg-status: #007acc;
+    --text-status: #ffffff;
+
+    /* Typography */
+    --text-primary: #d4d4d4;
+    --text-secondary: #cccccc;
+    --text-muted: #858585;
+    --text-heading: #ffffff;
+
+    /* Inputs & Insets */
+    --bg-input: #3c3c3c;
+    --border-input: #3c3c3c;
+    --text-input: #d4d4d4;
+    --bg-inset: #1e1e1e;
+    --bg-hover: #2a2d2e;
+    --bg-selection: #264f78;
+
+    /* Syntax Highlighting: VS Code Dark+ */
+    --syntax-keyword: #c586c0;
+    --syntax-storage: #569cd6;
+    --syntax-func: #dcdcaa;
+    --syntax-string: #ce9178;
+    --syntax-variable: #9cdcfe;
+    --syntax-number: #b5cea8;
+    --syntax-comment: #6a9955;
+    --syntax-type: #4ec9b0;
+    --syntax-tag: #569cd6;
+
+    /* Buttons */
+    --btn-primary-bg: #0e639c;
+    --btn-primary-hover: #1177bb;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #3a3d41;
+    --btn-secondary-hover: #45494e;
+    --btn-secondary-text: #ffffff;
+
+    /* Grid & Shadows */
+    --grid-line-color: rgba(255, 255, 255, 0.025);
+    --scrollbar-track: #1e1e1e;
+    --scrollbar-thumb: #333333;
+    --scrollbar-thumb-hover: #4f4f4f;
+    --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.45);
 }
 
 .light {
-  /* Surface colors */
-  --bg-editor: #FFFFFF;
-  --bg-sidebar: #F3F3F3;
-  --bg-card: #F3F3F3;
-  --bg-card-elevated: #FFFFFF;
-  --bg-activity-bar: #ECECEC;
-  --activity-bar-fg: #616161;
-  --activity-bar-active-fg: #000000;
-  --activity-bar-active-border: #007ACC;
-  --bg-title-bar: #DDDDDD;
-  --bg-active-tab: #FFFFFF;
-  --bg-inactive-tab: #ECECEC;
-  --text-active-tab: #333333;
-  --text-inactive-tab: #666666;
-  
-  /* Borders */
-  --border-editor: #E5E5E5;
-  --border-subtle: #E0E0E0;
-  
-  /* Status bar */
-  --bg-status: #007ACC;
-  --text-status: #FFFFFF;
-  
-  /* Typography */
-  --text-primary: #1E1E1E;
-  --text-secondary: #333333;
-  --text-muted: #666666;
-  --text-heading: #000000;
-  
-  /* Inputs & Insets */
-  --bg-input: #FFFFFF;
-  --border-input: #CECECE;
-  --text-input: #1E1E1E;
-  --bg-inset: #FFFFFF;
-  --bg-hover: #E8E8E8;
-  --bg-selection: #ADD6FF;
-  
-  /* Syntax Highlighting: VS Code Light+ */
-  --syntax-keyword: #AF00DB;
-  --syntax-storage: #0000FF;
-  --syntax-func: #795E26;
-  --syntax-string: #A31515;
-  --syntax-variable: #001080;
-  --syntax-number: #098658;
-  --syntax-comment: #008000;
-  --syntax-type: #267F99;
-  --syntax-tag: #800000;
-  
-  /* Buttons */
-  --btn-primary-bg: #007ACC;
-  --btn-primary-hover: #0062A3;
-  --btn-primary-text: #FFFFFF;
-  --btn-secondary-bg: #E5E5E5;
-  --btn-secondary-hover: #D5D5D5;
-  --btn-secondary-text: #333333;
-  
-  /* Grid & Shadows */
-  --grid-line-color: rgba(0, 0, 0, 0.035);
-  --scrollbar-track: #F3F3F3;
-  --scrollbar-thumb: #C1C1C1;
-  --scrollbar-thumb-hover: #A6A6A6;
-  --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.08);
+    /* Surface colors */
+    --bg-editor: #ffffff;
+    --bg-sidebar: #f3f3f3;
+    --bg-card: #f3f3f3;
+    --bg-card-elevated: #ffffff;
+    --bg-activity-bar: #ececec;
+    --activity-bar-fg: #616161;
+    --activity-bar-active-fg: #000000;
+    --activity-bar-active-border: #007acc;
+    --bg-title-bar: #dddddd;
+    --bg-active-tab: #ffffff;
+    --bg-inactive-tab: #ececec;
+    --text-active-tab: #333333;
+    --text-inactive-tab: #666666;
+
+    /* Borders */
+    --border-editor: #e5e5e5;
+    --border-subtle: #e0e0e0;
+
+    /* Status bar */
+    --bg-status: #007acc;
+    --text-status: #ffffff;
+
+    /* Typography */
+    --text-primary: #1e1e1e;
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --text-heading: #000000;
+
+    /* Inputs & Insets */
+    --bg-input: #ffffff;
+    --border-input: #cecece;
+    --text-input: #1e1e1e;
+    --bg-inset: #ffffff;
+    --bg-hover: #e8e8e8;
+    --bg-selection: #add6ff;
+
+    /* Syntax Highlighting: VS Code Light+ */
+    --syntax-keyword: #af00db;
+    --syntax-storage: #0000ff;
+    --syntax-func: #795e26;
+    --syntax-string: #a31515;
+    --syntax-variable: #001080;
+    --syntax-number: #098658;
+    --syntax-comment: #008000;
+    --syntax-type: #267f99;
+    --syntax-tag: #800000;
+
+    /* Buttons */
+    --btn-primary-bg: #007acc;
+    --btn-primary-hover: #0062a3;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #e5e5e5;
+    --btn-secondary-hover: #d5d5d5;
+    --btn-secondary-text: #333333;
+
+    /* Grid & Shadows */
+    --grid-line-color: rgba(0, 0, 0, 0.035);
+    --scrollbar-track: #f3f3f3;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a6a6a6;
+    --shadow-vscode: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-editor);
-  color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-  transition: background-color 0.2s ease, color 0.2s ease;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-editor);
+    color: var(--text-primary);
+    font-family:
+        "Inter",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-code, pre, .font-code {
-  font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
+button,
+a,
+input,
+textarea,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+    touch-action: manipulation;
+}
+
+:focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 640px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+code,
+pre,
+.font-code {
+    font-family:
+        "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
 }
 
 /* VS Code Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+    background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 2px;
+    background: var(--scrollbar-thumb);
+    border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+    background: var(--scrollbar-thumb-hover);
 }
 
 ::-webkit-scrollbar-corner {
-  background: var(--scrollbar-track);
+    background: var(--scrollbar-track);
 }
 
 /* Subtle Technical Editor Grid */
 .bg-grid-subtle {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-image:
+        linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
 }
 
 /* Blinking Cursor for editor prompts */
 @keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 .animate-cursor {
-  animation: cursorBlink 1s infinite;
+    animation: cursorBlink 1s infinite;
 }
