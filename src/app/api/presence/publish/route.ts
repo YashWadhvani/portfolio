@@ -3,12 +3,27 @@ import { publishPresence, PresenceActivity } from "@/lib/presence";
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
-  const expectedToken = process.env.PRESENCE_PUBLISH_TOKEN;
-  const suppliedToken = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+function normalizeToken(value: string | null | undefined) {
+  return String(value || "").trim().replace(/^("|')(.*)\1$/, "$2");
+}
 
-  if (!expectedToken || !suppliedToken || suppliedToken !== expectedToken) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function POST(request: Request) {
+  const expectedToken = normalizeToken(process.env.PRESENCE_PUBLISH_TOKEN);
+  const suppliedToken = normalizeToken(
+    request.headers.get("authorization")?.replace(/^Bearer\s+/i, ""),
+  );
+
+  if (!expectedToken) {
+    return NextResponse.json(
+      { error: "PRESENCE_PUBLISH_TOKEN is not configured on the production server" },
+      { status: 503 },
+    );
+  }
+  if (!suppliedToken) {
+    return NextResponse.json({ error: "Presence publish token was not supplied" }, { status: 401 });
+  }
+  if (suppliedToken !== expectedToken) {
+    return NextResponse.json({ error: "Presence publish token does not match the production server" }, { status: 401 });
   }
 
   try {
@@ -26,7 +41,8 @@ export async function POST(request: Request) {
 
     await publishPresence(activity);
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: "Invalid presence payload" }, { status: 400 });
+  } catch (error) {
+    console.error("Presence publish failed:", error);
+    return NextResponse.json({ error: "Presence storage is unavailable" }, { status: 502 });
   }
 }

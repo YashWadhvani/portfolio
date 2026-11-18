@@ -34,10 +34,9 @@ async function readPublishedPresence(): Promise<PresenceActivity | null> {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
-    if (response.ok) {
-      const result = await response.json();
-      stored = result.result ? JSON.parse(result.result) : null;
-    }
+    if (!response.ok) throw new Error(`Upstash presence read failed: ${response.status}`);
+    const result = await response.json();
+    stored = result.result ? JSON.parse(result.result) : null;
   }
 
   if (!stored || Date.now() - stored.updatedAt > PRESENCE_TTL_SECONDS * 1000) {
@@ -55,10 +54,11 @@ export async function publishPresence(activity: PresenceActivity) {
   const { url, token } = getKvConfig();
   if (url && token) {
     const encodedValue = encodeURIComponent(JSON.stringify(stored));
-    await fetch(`${url}/set/${PRESENCE_KEY}/${encodedValue}/EX/${PRESENCE_TTL_SECONDS}`, {
+    const response = await fetch(`${url}/set/${PRESENCE_KEY}/${encodedValue}/EX/${PRESENCE_TTL_SECONDS}`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
+    if (!response.ok) throw new Error(`Upstash presence write failed: ${response.status}`);
   }
 }
 

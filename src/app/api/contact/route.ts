@@ -18,15 +18,24 @@ export async function POST(request: Request) {
 
     const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.CONTACT_TO_EMAIL || "yashwadhvani123@gmail.com";
+    const from = process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
     if (!apiKey) {
       return NextResponse.json({ error: "Contact delivery is not configured yet. Please email directly instead." }, { status: 503 });
+    }
+
+    const senderAddress = from.match(/<([^>]+)>/)?.[1] || from;
+    if (/@(gmail|googlemail|yahoo|outlook|hotmail)\./i.test(senderAddress)) {
+      return NextResponse.json(
+        { error: "Contact delivery is misconfigured: CONTACT_FROM_EMAIL must use a domain verified in Resend, such as hello@yashwadhvani.tech." },
+        { status: 503 },
+      );
     }
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>",
+        from,
         to: [to],
         reply_to: email,
         subject: `[Portfolio] ${subject}`,
@@ -34,7 +43,18 @@ export async function POST(request: Request) {
       }),
     });
 
-    if (!response.ok) return NextResponse.json({ error: "Message delivery failed. Please try again or email directly." }, { status: 502 });
+    if (!response.ok) {
+      const providerError = await response.json().catch(() => null) as { message?: string; name?: string } | null;
+      console.error("Resend contact delivery failed", {
+        status: response.status,
+        name: providerError?.name,
+        message: providerError?.message,
+      });
+      return NextResponse.json(
+        { error: providerError?.message || "Message delivery failed. Please try again or email directly." },
+        { status: 502 },
+      );
+    }
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });

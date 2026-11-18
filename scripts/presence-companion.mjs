@@ -20,7 +20,9 @@ function loadLocalEnv() {
 loadLocalEnv();
 
 const endpoint = process.env.PRESENCE_URL || "http://localhost:3000/api/presence/publish";
-const token = process.env.PRESENCE_PUBLISH_TOKEN;
+const token = String(process.env.PRESENCE_PUBLISH_TOKEN || "")
+    .trim()
+    .replace(/^("|')(.*)\1$/, "$2");
 const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 15000);
 const configPath = path.resolve(process.cwd(), "scripts", "presence-apps.json");
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));

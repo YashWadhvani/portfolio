@@ -108,6 +108,8 @@ CONTACT_TO_EMAIL=your-inbox@example.com
 CONTACT_FROM_EMAIL=Portfolio <hello@example.com>
 ```
 
+`CONTACT_FROM_EMAIL` must use a domain verified in Resend. Do not use a visitor or personal Gmail/Yahoo/Outlook address as the sender. For this portfolio, verify `yashwadhvani.tech` in Resend and use an address such as `Portfolio <hello@yashwadhvani.tech>`. The visitor's address is used as `reply_to`.
+
 For initial testing, Resend may restrict the recipient/sender until your domain and account are verified. If these variables are missing, the form returns a clear configuration error instead of pretending the message was delivered.
 
 ## 6. Live desktop presence
@@ -137,6 +139,19 @@ scripts/presence-apps.json
 ```
 
 For deployed/serverless presence, create an Upstash Redis database and add its REST URL/token as `KV_REST_API_URL` and `KV_REST_API_TOKEN`. Without Upstash, presence is only reliable while requests reach the same running server instance.
+
+### Presence companion returns 401
+
+`401 Unauthorized` means `PRESENCE_PUBLISH_TOKEN` does not match between the companion and the deployed API, or the variable is missing from Vercel.
+
+1. Copy the exact value of `PRESENCE_PUBLISH_TOKEN` from the machine running the companion.
+2. In Vercel, open **Project → Settings → Environment Variables**.
+3. Set that exact value for the **Production** environment.
+4. Remove accidental quotes or trailing spaces from the value.
+5. Redeploy the production project; environment changes do not affect an existing deployment.
+6. Confirm `PRESENCE_URL` points to the same production domain.
+
+The deprecation warning from `active-win` is unrelated to authentication and does not cause the 401.
 
 ## 7. Post-deployment checks
 
