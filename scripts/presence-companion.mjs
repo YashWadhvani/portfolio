@@ -84,6 +84,7 @@ async function publish(activity) {
     const response = await fetch(endpoint, {
         method: "POST",
         headers: {
+            "X-Presence-Token": token,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },

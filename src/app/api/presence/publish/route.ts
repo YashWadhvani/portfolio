@@ -10,7 +10,8 @@ function normalizeToken(value: string | null | undefined) {
 export async function POST(request: Request) {
   const expectedToken = normalizeToken(process.env.PRESENCE_PUBLISH_TOKEN);
   const suppliedToken = normalizeToken(
-    request.headers.get("authorization")?.replace(/^Bearer\s+/i, ""),
+    request.headers.get("x-presence-token") ||
+      request.headers.get("authorization")?.replace(/^Bearer\s+/i, ""),
   );
 
   if (!expectedToken) {
