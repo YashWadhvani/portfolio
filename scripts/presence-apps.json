@@ -116,6 +116,7 @@
                 "GitHub Desktop",
                 "GitHub"
             ],
+            "titlePatterns": ["GitHub Desktop", "GitHub Desktop for Windows"],
             "app": "GitHub Desktop",
             "icon": "⌨️",
             "iconUrl": "https://cdn.simpleicons.org/github/181717",

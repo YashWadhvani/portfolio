@@ -63,7 +63,10 @@ function getActivity(window) {
     }
 
     const known = config.trackedApps.find((activity) =>
-        activity.processes.some((process) => processMatches(processName, process)),
+        activity.processes.some((process) => processMatches(processName, process))
+        || (activity.titlePatterns || []).some((pattern) =>
+            title.toLowerCase().includes(pattern.toLowerCase())
+        ),
     );
 
     if (known) {
