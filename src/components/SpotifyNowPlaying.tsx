@@ -193,11 +193,23 @@ export default function SpotifyNowPlaying({
                             aria-hidden="true"
                         >
                             {activity.iconUrl ? (
-                                <img
-                                    src={activity.iconUrl}
-                                    alt=""
-                                    className="h-full w-full object-contain"
-                                />
+                                <>
+                                    <img
+                                        src={activity.iconUrl}
+                                        alt=""
+                                        className="h-full w-full object-contain"
+                                        onError={(event) => {
+                                            event.currentTarget.style.display =
+                                                "none";
+                                            event.currentTarget.nextElementSibling?.removeAttribute(
+                                                "hidden",
+                                            );
+                                        }}
+                                    />
+                                    <span hidden className="text-2xl">
+                                        {activity.icon}
+                                    </span>
+                                </>
                             ) : (
                                 <span className="text-2xl">
                                     {activity.icon}

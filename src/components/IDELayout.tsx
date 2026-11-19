@@ -10,10 +10,10 @@ import CommandPalette from "./CommandPalette";
 import PageTransition from "./PageTransition";
 
 export default function IDELayout({ children }: { children: React.ReactNode }) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTerminalOpen, setIsTerminalOpen] = useState(false);
     const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState<boolean | null>(null);
 
     // Responsive check for screen size on mount and resize
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function IDELayout({ children }: { children: React.ReactNode }) {
             {/* Main workspace layout: ActivityBar + Sidebar + Editor Window */}
             <div className="flex flex-1 min-h-0 overflow-hidden relative">
                 {/* Mobile Backdrop when sidebar is open */}
-                {isMobile && isSidebarOpen && (
+                {isMobile === true && isSidebarOpen && (
                     <div
                         className="fixed inset-0 bg-black/60 z-20"
                         onClick={() => setIsSidebarOpen(false)}
@@ -72,22 +72,24 @@ export default function IDELayout({ children }: { children: React.ReactNode }) {
                 )}
 
                 {/* Sidebar container */}
-                <div
-                    className={`${
-                        isMobile
-                            ? `fixed top-10 bottom-7 left-0 z-30 max-w-[calc(100vw-1rem)] transition-transform duration-300 shadow-vscode ${
-                                  isSidebarOpen
-                                      ? "translate-x-0"
-                                      : "-translate-x-full"
-                              }`
-                            : "relative flex h-full shrink-0"
-                    }`}
-                >
-                    <Sidebar
-                        isOpen={isMobile ? true : isSidebarOpen}
-                        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-                    />
-                </div>
+                {isMobile !== null && (
+                    <div
+                        className={`${
+                            isMobile
+                                ? `fixed top-10 bottom-7 left-0 z-30 max-w-[calc(100vw-1rem)] shadow-vscode ${
+                                      isSidebarOpen
+                                          ? "translate-x-0 transition-transform duration-300"
+                                          : "-translate-x-full transition-none"
+                                  }`
+                                : "relative flex h-full shrink-0"
+                        }`}
+                    >
+                        <Sidebar
+                            isOpen={isMobile ? true : isSidebarOpen}
+                            onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+                        />
+                    </div>
+                )}
 
                 {/* Central Editor Area */}
                 <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-editor-bg relative bg-grid-subtle">

@@ -14,7 +14,7 @@
             "processes": ["code.exe", "cursor.exe", "windsurf.exe"],
             "app": "Visual Studio Code",
             "icon": "💻",
-            "iconUrl": "https://cdn.simpleicons.org/visualstudiocode/007ACC",
+            "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg",
             "detailTemplate": "Working on {root}",
             "titleMode": "root"
         },
@@ -22,6 +22,7 @@
             "processes": ["antigravity.exe", "antigravity"],
             "app": "Antigravity",
             "icon": "🚀",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=antigravity.google&sz=128",
             "detailTemplate": "Working on {root}",
             "titleMode": "root"
         },
@@ -29,7 +30,7 @@
             "processes": ["valorant-win64-shipping.exe", "valorant.exe"],
             "app": "Valorant",
             "icon": "🎮",
-            "iconUrl": "https://cdn.simpleicons.org/riotgames/EB0029",
+            "iconUrl": "https://cdn.simpleicons.org/valorant/EB0029",
             "detailTemplate": "Playing a match"
         },
         {
@@ -106,6 +107,13 @@
             "detailTemplate": "Managing Git repositories"
         },
         {
+            "processes": ["GitHubDesktop.exe", "githubdesktop.exe", "github"],
+            "app": "GitKraken",
+            "icon": "🐙",
+            "iconUrl": "https://cdn.simpleicons.org/github/181717",
+            "detailTemplate": "Managing Git repositories"
+        },
+        {
             "processes": ["docker desktop.exe", "docker.exe"],
             "app": "Docker Desktop",
             "icon": "🐳",
@@ -122,7 +130,7 @@
             ],
             "app": "Terminal",
             "icon": "⌨️",
-            "iconUrl": "https://cdn.simpleicons.org/windowsterminal/4D4D4D",
+            "iconUrl": "https://cdn.simpleicons.org/gnometerminal/4D4D4D",
             "detailTemplate": "Working in the terminal",
             "titleMode": "title"
         }

@@ -46,8 +46,33 @@ export default function TabBar() {
 
     return (
         <div className="border-b border-editor-border bg-editor-sidebar select-none font-code text-xs shrink-0">
-            {/* File Tabs Strip */}
-            <div className="flex items-center overflow-x-auto scrollbar-none bg-editor-sidebar">
+            {/* Mobile Page Switcher */}
+            <div className="grid grid-cols-4 gap-1 border-b border-editor-border bg-editor-sidebar p-1 sm:hidden">
+                {tabs.map((tab) => {
+                    const isActive =
+                        tab.path === "/"
+                            ? pathname === "/"
+                            : pathname.startsWith(tab.path);
+                    return (
+                        <Link
+                            key={tab.id}
+                            href={tab.path}
+                            aria-label={tab.crumb.replace(".tsx", "")}
+                            title={tab.crumb.replace(".tsx", "")}
+                            className={`flex h-9 items-center justify-center rounded border transition ${
+                                isActive
+                                    ? "border-editor-borderFocus bg-editor-activeTab text-editor-textActiveTab"
+                                    : "border-transparent bg-editor-inactiveTab text-editor-textInactiveTab hover:bg-editor-hover"
+                            }`}
+                        >
+                            <FileCode className={`h-4 w-4 ${tab.color}`} />
+                        </Link>
+                    );
+                })}
+            </div>
+
+            {/* Desktop File Tabs Strip */}
+            <div className="hidden items-center overflow-x-auto scrollbar-none bg-editor-sidebar sm:flex">
                 <div className="flex items-center">
                     {tabs.map((tab) => {
                         const isActive =
@@ -78,7 +103,7 @@ export default function TabBar() {
             </div>
 
             {/* Breadcrumb Trail */}
-            <div className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-editor-bg text-[11px] text-editor-textMuted border-t border-editor-border overflow-x-auto whitespace-nowrap">
+            <div className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-editor-bg text-[11px] text-editor-textMuted border-t border-editor-border overflow-hidden whitespace-nowrap">
                 <span className="hidden sm:inline hover:text-editor-textPrimary cursor-pointer">
                     portfolio
                 </span>
