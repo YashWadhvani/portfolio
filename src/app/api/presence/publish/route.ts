@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       app: String(body.app || "").trim().slice(0, 80),
       detail: String(body.detail || "").trim().slice(0, 160),
       icon: String(body.icon || "💻").slice(0, 4),
+      iconUrl: String(body.iconUrl || "").slice(0, 300),
       source: "desktop",
       status: String(body.app || "").trim().toLowerCase() === "away" ? "away" : "online",
     };

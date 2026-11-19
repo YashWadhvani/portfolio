@@ -309,14 +309,20 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
       },
       {
         name: "Shopify",
-        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/shopify/shopify-original.svg",
+        icon: "https://cdn.simpleicons.org/shopify/7AB55C",
         level: "Proficient",
         category: "Tools",
       },
       {
         name: "Prismic CMS",
-        icon: "https://github.com/devicons/devicon/blob/v2.18.0/icons/prisma/prisma-original.svg",
+        icon: "https://cdn.simpleicons.org/prismic/5163BA",
         level: "Proficient",
+        category: "Tools",
+      },
+      {
+        name: "Prisma ORM",
+        icon: "https://cdn.simpleicons.org/prisma/2D3748",
+        level: "Advanced",
         category: "Tools",
       },
     ],

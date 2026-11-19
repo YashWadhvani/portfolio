@@ -14,6 +14,7 @@
             "processes": ["code.exe", "cursor.exe", "windsurf.exe"],
             "app": "Visual Studio Code",
             "icon": "💻",
+            "iconUrl": "https://cdn.simpleicons.org/visualstudiocode/007ACC",
             "detailTemplate": "Working on {root}",
             "titleMode": "root"
         },
@@ -28,25 +29,101 @@
             "processes": ["valorant-win64-shipping.exe", "valorant.exe"],
             "app": "Valorant",
             "icon": "🎮",
+            "iconUrl": "https://cdn.simpleicons.org/riotgames/EB0029",
             "detailTemplate": "Playing a match"
         },
         {
             "processes": ["spotify.exe"],
             "app": "Spotify",
             "icon": "🎵",
+            "iconUrl": "https://cdn.simpleicons.org/spotify/1DB954",
             "detailTemplate": "Listening to music"
         },
         {
             "processes": ["discord.exe"],
             "app": "Discord",
             "icon": "💬",
+            "iconUrl": "https://cdn.simpleicons.org/discord/5865F2",
             "detailTemplate": "Hanging out on Discord"
         },
         {
             "processes": ["chrome.exe", "msedge.exe", "firefox.exe"],
             "app": "Web browser",
             "icon": "🌐",
+            "iconUrl": "https://cdn.simpleicons.org/googlechrome/4285F4",
             "detailTemplate": "Browsing {title}",
+            "titleMode": "title"
+        },
+        {
+            "processes": ["figma.exe"],
+            "app": "Figma",
+            "icon": "🎨",
+            "iconUrl": "https://cdn.simpleicons.org/figma/F24E1E",
+            "detailTemplate": "Designing {title}",
+            "titleMode": "title"
+        },
+        {
+            "processes": ["obs64.exe", "obs32.exe"],
+            "app": "OBS Studio",
+            "icon": "📹",
+            "iconUrl": "https://cdn.simpleicons.org/obsstudio/302E31",
+            "detailTemplate": "Streaming or recording"
+        },
+        {
+            "processes": ["notion.exe"],
+            "app": "Notion",
+            "icon": "📝",
+            "iconUrl": "https://cdn.simpleicons.org/notion/000000",
+            "detailTemplate": "Working in {title}",
+            "titleMode": "title"
+        },
+        {
+            "processes": ["teams.exe"],
+            "app": "Microsoft Teams",
+            "icon": "👥",
+            "iconUrl": "https://cdn.simpleicons.org/microsoftteams/6264A7",
+            "detailTemplate": "In Microsoft Teams"
+        },
+        {
+            "processes": ["slack.exe"],
+            "app": "Slack",
+            "icon": "💬",
+            "iconUrl": "https://cdn.simpleicons.org/slack/4A154B",
+            "detailTemplate": "Working in Slack"
+        },
+        {
+            "processes": ["postman.exe"],
+            "app": "Postman",
+            "icon": "📮",
+            "iconUrl": "https://cdn.simpleicons.org/postman/FF6C37",
+            "detailTemplate": "Testing APIs"
+        },
+        {
+            "processes": ["gitkraken.exe"],
+            "app": "GitKraken",
+            "icon": "🐙",
+            "iconUrl": "https://cdn.simpleicons.org/gitkraken/179287",
+            "detailTemplate": "Managing Git repositories"
+        },
+        {
+            "processes": ["docker desktop.exe", "docker.exe"],
+            "app": "Docker Desktop",
+            "icon": "🐳",
+            "iconUrl": "https://cdn.simpleicons.org/docker/2496ED",
+            "detailTemplate": "Managing containers"
+        },
+        {
+            "processes": [
+                "terminal.exe",
+                "windowsterminal.exe",
+                "powershell.exe",
+                "pwsh.exe",
+                "cmd.exe"
+            ],
+            "app": "Terminal",
+            "icon": "⌨️",
+            "iconUrl": "https://cdn.simpleicons.org/windowsterminal/4D4D4D",
+            "detailTemplate": "Working in the terminal",
             "titleMode": "title"
         }
     ]

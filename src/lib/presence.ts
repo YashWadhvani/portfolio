@@ -4,6 +4,7 @@ export interface PresenceActivity {
   app: string;
   detail: string;
   icon: string;
+  iconUrl?: string;
   source: "spotify" | "github" | "desktop" | "default";
   status?: PresenceStatus;
 }

@@ -24,6 +24,7 @@ interface PresenceActivity {
     app: string;
     detail: string;
     icon: string;
+    iconUrl?: string;
     source: "spotify" | "github" | "desktop" | "default";
 }
 
@@ -188,10 +189,20 @@ export default function SpotifyNowPlaying({
                     </p>
                     <div className="flex items-center gap-3">
                         <span
-                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-[#007ACC]/20 text-2xl"
+                            className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#007ACC]/20 p-1.5"
                             aria-hidden="true"
                         >
-                            {activity.icon}
+                            {activity.iconUrl ? (
+                                <img
+                                    src={activity.iconUrl}
+                                    alt=""
+                                    className="h-full w-full object-contain"
+                                />
+                            ) : (
+                                <span className="text-2xl">
+                                    {activity.icon}
+                                </span>
+                            )}
                         </span>
                         <div className="min-w-0">
                             <p className="truncate font-sans font-semibold text-editor-textHeading">

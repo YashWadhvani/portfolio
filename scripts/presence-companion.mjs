@@ -73,6 +73,7 @@ function getActivity(window) {
         return {
             app: known.app,
             icon: known.icon,
+            iconUrl: known.iconUrl || "",
             detail: known.detailTemplate.replace("{root}", value).replace("{title}", value),
         };
     }
