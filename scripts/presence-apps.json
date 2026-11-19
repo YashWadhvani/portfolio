@@ -109,8 +109,12 @@
         {
             "processes": [
                 "GitHubDesktop.exe",
+                "GitHubDesktop",
                 "githubdesktop.exe",
-                "GitHub Desktop"
+                "githubdesktop",
+                "GitHub Desktop.exe",
+                "GitHub Desktop",
+                "GitHub"
             ],
             "app": "GitHub Desktop",
             "icon": "⌨️",

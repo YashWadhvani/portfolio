@@ -24,7 +24,7 @@ export default function TabBar() {
             path: "/",
             color: "text-syntax-storage",
             crumb: "home.tsx",
-            mobileIcon: <House className="h-4 w-4" />,
+            mobileIcon: <House className="h-4 w-4 text-syntax-storage" />,
         },
         {
             id: "about",
@@ -32,7 +32,7 @@ export default function TabBar() {
             path: "/about",
             color: "text-syntax-keyword",
             crumb: "about.tsx",
-            mobileIcon: <UserRound className="h-4 w-4" />,
+            mobileIcon: <UserRound className="h-4 w-4 text-syntax-keyword" />,
         },
         {
             id: "projects",
@@ -40,7 +40,7 @@ export default function TabBar() {
             path: "/projects",
             color: "text-syntax-type",
             crumb: "projects.tsx",
-            mobileIcon: <FolderGit2 className="h-4 w-4" />,
+            mobileIcon: <FolderGit2 className="h-4 w-4 text-syntax-type" />,
         },
         {
             id: "contact",
@@ -48,7 +48,7 @@ export default function TabBar() {
             path: "/contact",
             color: "text-syntax-string",
             crumb: "contact.tsx",
-            mobileIcon: <Mail className="h-4 w-4" />,
+            mobileIcon: <Mail className="h-4 w-4 text-syntax-string" />,
         },
     ];
 

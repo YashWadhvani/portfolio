@@ -84,18 +84,32 @@ function getActivity(window) {
 }
 
 async function publish(activity) {
-    const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-            "X-Presence-Token": token,
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(activity),
-    });
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
 
-    if (!response.ok) {
-        throw new Error(`Presence publish failed (${response.status}): ${await response.text()}`);
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "X-Presence-Token": token,
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(activity),
+                signal: controller.signal,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Presence publish failed (${response.status}): ${await response.text()}`);
+            }
+            return;
+        } catch (error) {
+            if (attempt === 2) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        } finally {
+            clearTimeout(timeout);
+        }
     }
 }
 
@@ -104,11 +118,8 @@ let lastSignature = "";
 async function update() {
     try {
         const window = await activeWindow();
-        const activity = getActivity(window) || {
-            app: "Away",
-            icon: "🌙",
-            detail: "No tracked activity",
-        };
+        const activity = getActivity(window);
+        if (!activity) return;
         const signature = `${activity.app}|${activity.detail}|${activity.icon}`;
 
         if (signature === lastSignature) return;
