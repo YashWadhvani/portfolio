@@ -59,6 +59,25 @@ const initialPresence: PresenceResponse = {
     status: "away",
 };
 
+const activityIconStyles: Record<string, string> = {
+    "Visual Studio Code": "bg-[#007ACC]/20",
+    Antigravity: "bg-[#5B5BD6]/20",
+    Valorant: "bg-[#FF4655]/20",
+    Spotify: "bg-[#1DB954]/20",
+    Discord: "bg-[#5865F2]/20",
+    "Web browser": "bg-[#4285F4]/20",
+    Figma: "bg-[#F24E1E]/20",
+    "OBS Studio": "bg-[#302E31]/20",
+    Notion: "bg-white/90",
+    "Microsoft Teams": "bg-[#6264A7]/20",
+    Slack: "bg-[#4A154B]/20",
+    Postman: "bg-[#FF6C37]/20",
+    GitKraken: "bg-[#179287]/20",
+    "GitHub Desktop": "bg-white/95",
+    "Docker Desktop": "bg-[#2496ED]/20",
+    Terminal: "bg-[#1E293B]",
+};
+
 export default function SpotifyNowPlaying({
     variant = "card",
 }: SpotifyNowPlayingProps) {
@@ -189,7 +208,7 @@ export default function SpotifyNowPlaying({
                     </p>
                     <div className="flex items-center gap-3">
                         <span
-                            className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#007ACC]/20 p-1.5"
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md p-1.5 ${activityIconStyles[activity.app] || "bg-editor-hover"}`}
                             aria-hidden="true"
                         >
                             {activity.iconUrl ? (
