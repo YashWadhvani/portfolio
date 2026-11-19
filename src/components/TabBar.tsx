@@ -3,7 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileCode, X, ChevronRight, Code2 } from "lucide-react";
+import {
+    FileCode,
+    X,
+    ChevronRight,
+    Code2,
+    House,
+    UserRound,
+    FolderGit2,
+    Mail,
+} from "lucide-react";
 
 export default function TabBar() {
     const pathname = usePathname();
@@ -15,6 +24,7 @@ export default function TabBar() {
             path: "/",
             color: "text-syntax-storage",
             crumb: "home.tsx",
+            mobileIcon: <House className="h-4 w-4" />,
         },
         {
             id: "about",
@@ -22,6 +32,7 @@ export default function TabBar() {
             path: "/about",
             color: "text-syntax-keyword",
             crumb: "about.tsx",
+            mobileIcon: <UserRound className="h-4 w-4" />,
         },
         {
             id: "projects",
@@ -29,6 +40,7 @@ export default function TabBar() {
             path: "/projects",
             color: "text-syntax-type",
             crumb: "projects.tsx",
+            mobileIcon: <FolderGit2 className="h-4 w-4" />,
         },
         {
             id: "contact",
@@ -36,6 +48,7 @@ export default function TabBar() {
             path: "/contact",
             color: "text-syntax-string",
             crumb: "contact.tsx",
+            mobileIcon: <Mail className="h-4 w-4" />,
         },
     ];
 
@@ -65,7 +78,7 @@ export default function TabBar() {
                                     : "border-transparent bg-editor-inactiveTab text-editor-textInactiveTab hover:bg-editor-hover"
                             }`}
                         >
-                            <FileCode className={`h-4 w-4 ${tab.color}`} />
+                            {tab.mobileIcon}
                         </Link>
                     );
                 })}

@@ -69,7 +69,9 @@ function getActivity(window) {
     if (known) {
         const value = known.titleMode === "root"
             ? getRootDirectory(title, known.app)
-            : title.slice(0, 120) || "the current window";
+            : known.titleMode === "generic"
+                ? ""
+                : title.slice(0, 120) || "the current window";
         return {
             app: known.app,
             icon: known.icon,

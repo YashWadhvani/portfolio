@@ -52,8 +52,8 @@
             "app": "Web browser",
             "icon": "🌐",
             "iconUrl": "https://cdn.simpleicons.org/googlechrome/4285F4",
-            "detailTemplate": "Browsing {title}",
-            "titleMode": "title"
+            "detailTemplate": "Exploring something interesting",
+            "titleMode": "generic"
         },
         {
             "processes": ["figma.exe"],
@@ -107,9 +107,13 @@
             "detailTemplate": "Managing Git repositories"
         },
         {
-            "processes": ["GitHubDesktop.exe", "githubdesktop.exe", "github"],
-            "app": "GitKraken",
-            "icon": "🐙",
+            "processes": [
+                "GitHubDesktop.exe",
+                "githubdesktop.exe",
+                "GitHub Desktop"
+            ],
+            "app": "GitHub Desktop",
+            "icon": "⌨️",
             "iconUrl": "https://cdn.simpleicons.org/github/181717",
             "detailTemplate": "Managing Git repositories"
         },
