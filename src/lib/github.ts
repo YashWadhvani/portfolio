@@ -4,7 +4,12 @@ const GITHUB_API = "https://api.github.com/users/YashWadhvani/repos?per_page=100
 
 export function mapGitHubRepository(repo: any): ProjectItem {
   const curated = ALL_REPOSITORIES.find(
-    (item) => item.name.toLowerCase() === String(repo.name).toLowerCase(),
+    (item) =>
+      item.name.toLowerCase() === String(repo.name).toLowerCase() ||
+      item.repositories?.some(
+        (repository) =>
+          repository.name.toLowerCase() === String(repo.name).toLowerCase(),
+      ),
   );
 
   let category: ProjectItem["category"] = "Frontend";
@@ -53,5 +58,63 @@ export async function fetchGitHubRepositories(): Promise<ProjectItem[]> {
   const repositories = await response.json();
   if (!Array.isArray(repositories)) throw new Error("Invalid GitHub response");
 
-  return repositories.filter((repo) => !repo.fork).map(mapGitHubRepository);
+  const liveProjects = repositories
+    .filter((repo) => !repo.fork)
+    .map(mapGitHubRepository);
+  const curatedProjects = ALL_REPOSITORIES.map((project) => {
+    const repositoryNames = project.repositories?.map(
+      (repository) => repository.name,
+    ) || [project.name];
+    const matchingProjects = liveProjects.filter((liveProject) =>
+      repositoryNames.some(
+        (name) => name.toLowerCase() === liveProject.name.toLowerCase(),
+      ),
+    );
+
+    if (matchingProjects.length === 0) return project;
+
+    const repositoryMetadata = matchingProjects.flatMap(
+      (matchingProject) =>
+        matchingProject.repositories || [
+          {
+            name: matchingProject.name,
+            url: matchingProject.html_url || "",
+            language: matchingProject.language,
+            stars: matchingProject.stars,
+            forks: matchingProject.forks,
+          },
+        ],
+    );
+    const uniqueRepositoryMetadata = Array.from(
+      new Map(
+        repositoryMetadata.map((repository) => [
+          repository.name.toLowerCase(),
+          repository,
+        ]),
+      ).values(),
+    );
+
+    return {
+      ...project,
+      stars: matchingProjects.reduce((total, item) => total + item.stars, 0),
+      forks: matchingProjects.reduce((total, item) => total + item.forks, 0),
+      repositories: uniqueRepositoryMetadata,
+    };
+  });
+
+  const representedNames = new Set(
+    curatedProjects.flatMap((project) =>
+      project.repositories?.map((repository) => repository.name) || [
+        project.name,
+      ],
+    ),
+  );
+  const uncuratedLiveProjects = liveProjects.filter(
+    (project) =>
+      !Array.from(representedNames).some(
+        (name) => name.toLowerCase() === project.name.toLowerCase(),
+      ),
+  );
+
+  return [...curatedProjects, ...uncuratedLiveProjects];
 }

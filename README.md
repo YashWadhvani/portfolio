@@ -1,99 +1,198 @@
-# Yash Wadhvani's Portfolio
+# Yash Wadhvani · Developer Portfolio
 
-My Personal Portfolio
+Personal portfolio website built with Next.js and designed as a VS Code-inspired
+workspace. It presents projects, technical skills, education, experience,
+publications, contact information, Spotify playback, and optional live desktop
+presence.
 
-Deployment instructions, environment setup, Spotify configuration, contact delivery, and desktop presence setup are documented in [DEPLOYMENT.md](DEPLOYMENT.md).
+**Live site:** [yashwadhvani.tech](https://yashwadhvani.tech)
 
-# Table of Contents
+## Contents
 
-- [Description](#description)
-- [Technologies Used](#technologies-used)
-- [Features](#features)
-- [Installation](#installation)
+- [Highlights](#highlights)
+- [Technology](#technology)
+- [Getting started](#getting-started)
+- [Available scripts](#available-scripts)
+- [Project structure](#project-structure)
+- [Managing portfolio projects](#managing-portfolio-projects)
+- [Optional integrations](#optional-integrations)
+- [Deployment](#deployment)
+- [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
-- [Code of Conduct](#code-of-conduct)
-- [Reporting Issues](#reporting-issues)
-- [Acknowledgements](#acknowledgements)
-- [Contact](#contact)
 
-# Description
+## Highlights
 
-This is my personal portfolio website where I showcase my projects, skills, and experiences. The website is built using React, HTML, CSS, and JavaScript, and is designed to be responsive and user-friendly.
+- VS Code-inspired interface with tabs, sidebar navigation, terminal drawer,
+  command palette, theme support, and page transitions.
+- Curated portfolio projects combined with live GitHub repository metadata.
+- Manual projects that do not have a public repository.
+- Multiple repositories grouped into one project, with individual repository
+  links and clone commands.
+- GitHub README rendering with GitHub Flavored Markdown, working relative
+  links, images, tables, code blocks, and heading anchors.
+- Responsive pages for the portfolio, about, projects, contact, and admin
+  Spotify setup.
+- Optional Spotify now-playing status, Resend contact delivery, and Windows
+  desktop presence.
 
-# Technologies Used
+## Technology
 
-- React
-- HTML5
-- CSS3
-- JavaScript (ES6)
+- **Framework:** Next.js 14, React 18, TypeScript
+- **Styling:** Tailwind CSS, PostCSS
+- **Icons and UI:** Lucide React, Framer Motion
+- **Project documentation:** React Markdown, Remark GFM, Rehype Slug
+- **Integrations:** GitHub API, Spotify API, Resend, Upstash Redis
+- **Testing:** Playwright accessibility and keyboard-navigation tests
 
-# Features
+## Getting started
 
-- Responsive design
-- Interactive elements
-- Project showcases
+### Prerequisites
 
-# Installation
+- Node.js 20 or newer
+- npm
 
-1. Clone the repository:
-    ```
-    git clone https://github.com/YashWadhvani/portfolio.git
-    ```
-2. Navigate to the project directory:
-    ```
-    cd portfolio
-    ```
-3. Install dependencies:
-    ```
-    npm install
-    ```
-4. Start the development server:
-    ```
-    npm start
-    ```
-5. Open your browser and go to `http://localhost:3000`
+### Installation
 
-# Live desktop presence
+```powershell
+git clone https://github.com/YashWadhvani/portfolio.git
+cd portfolio
+npm install
+```
 
-The portfolio can display the active Windows application through the local desktop companion. It detects the foreground window (VS Code, Valorant, Spotify, Discord, browsers, and other apps) and publishes only a short activity label to the protected presence endpoint.
+Create `.env.local` only when enabling optional integrations. See
+[DEPLOYMENT.md](DEPLOYMENT.md) for the complete variable reference.
 
-1. Set the same `PRESENCE_PUBLISH_TOKEN` in `.env.local` and your deployment environment.
-2. Start the portfolio with `npm run dev`.
-3. In a second terminal, run `npm run presence:companion`.
+Start the development server:
 
-For a deployed site, set `PRESENCE_URL` to the deployed `/api/presence/publish` URL and configure `KV_REST_API_URL` plus `KV_REST_API_TOKEN` for Upstash Redis. Without Redis, presence is available while the same server process remains alive.
+```powershell
+npm run dev
+```
 
-# Contributing
+Open [http://localhost:3000](http://localhost:3000).
 
-Contributions are welcome! Please follow these steps:
+## Available scripts
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
+| Command                      | Purpose                                         |
+| ---------------------------- | ----------------------------------------------- |
+| `npm run dev`                | Start the local Next.js development server      |
+| `npm run build`              | Create a production build                       |
+| `npm run start`              | Start the production server after building      |
+| `npm run lint`               | Run the Next.js linter                          |
+| `npm run test:a11y`          | Run Playwright keyboard and accessibility tests |
+| `npm run presence:companion` | Start the Windows desktop presence companion    |
 
-Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+## Project structure
 
-# License
+```text
+src/
+├── app/                 # Next.js routes, pages, and API endpoints
+│   ├── api/             # GitHub, Spotify, contact, and presence APIs
+│   ├── projects/        # Project list and project detail pages
+│   └── admin/           # Protected Spotify setup page
+├── components/          # Shared IDE-style UI components
+├── data/                # Portfolio content and project configuration
+└── lib/                 # GitHub and presence integration helpers
+
+public/                  # Static assets, icons, sitemap, and resume files
+scripts/                 # Presence companion and local configuration
+tests/                   # Playwright tests
+```
+
+## Managing portfolio projects
+
+Project content is maintained in
+[src/data/portfolioData.ts](src/data/portfolioData.ts).
+
+### Manual projects
+
+Add projects that do not have a GitHub repository to `MANUAL_PROJECTS`:
+
+```ts
+{
+  id: "research-dashboard",
+  name: "research-dashboard",
+  title: "Research Dashboard",
+  description: "A dashboard for exploring research data.",
+  language: "TypeScript",
+  topics: ["nextjs", "data-visualization"],
+  stars: 0,
+  forks: 0,
+  category: "Frontend",
+  manual: true,
+  demoUrl: "https://example.com",
+}
+```
+
+### Projects with multiple repositories
+
+Use the `repositories` field when one project contains separate frontend,
+backend, mobile, or infrastructure repositories. Each repository is displayed
+as a link and receives its own clone command on the detail page.
+
+```ts
+repositories: [
+    {
+        name: "research-dashboard-frontend",
+        url: "https://github.com/YashWadhvani/research-dashboard-frontend",
+        label: "Frontend",
+    },
+    {
+        name: "research-dashboard-api",
+        url: "https://github.com/YashWadhvani/research-dashboard-api",
+        label: "Backend API",
+    },
+];
+```
+
+Existing repository groups are identified with `projectId` in the same data
+file.
+
+## Optional integrations
+
+The site works without external services. Configure these only when needed:
+
+- **Spotify:** client credentials, refresh token, and admin token.
+- **Contact delivery:** Resend API key and sender/recipient addresses.
+- **Desktop presence:** `PRESENCE_PUBLISH_TOKEN`, `PRESENCE_URL`, and optional
+  Upstash Redis credentials.
+
+For setup instructions, production configuration, security notes, and the
+Windows companion workflow, read [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Deployment
+
+This project is configured for Vercel:
+
+1. Import the repository into Vercel.
+2. Keep the framework as **Next.js**.
+3. Use `npm run build` as the build command.
+4. Add only the environment variables required by the integrations you use.
+5. Deploy.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for dashboard and CLI deployment steps.
+
+## Testing
+
+Run the type check and accessibility tests before submitting changes:
+
+```powershell
+npm exec tsc -- --noEmit
+npm run test:a11y
+```
+
+Install the Playwright browser once on a new machine if necessary:
+
+```powershell
+npx playwright install chromium
+```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Follow the existing TypeScript, Tailwind, accessibility, and responsive UI
+patterns. Do not commit `.env.local` or any API credentials.
+
+## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-# Code of Conduct
-
-Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) when participating in this project.
-
-# Reporting Issues
-
-If you find a bug or have a feature request, please open an [issue](https://github.com/YashWadhvani/portfolio/issues) with detailed information.
-
-# Acknowledgements
-
-- [React](https://reactjs.org/)
-- [Create React App](https://create-react-app.dev/)
-- Thanks to all contributors and open source libraries used in this project.
-
-# Contact
-
-For questions or feedback, please contact [yashwadhvani123@gmail.com](mailto:yashwadhvani123@gmail.com) or open an issue on GitHub.

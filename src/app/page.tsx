@@ -473,15 +473,17 @@ export default function HomePage() {
                                     Inspect details &rarr;
                                 </Link>
 
-                                <a
-                                    href={project.html_url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="inline-flex items-center gap-1 text-editor-textMuted hover:text-editor-textPrimary transition"
-                                >
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                    <span>GitHub</span>
-                                </a>
+                                {project.html_url && (
+                                    <a
+                                        href={project.html_url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="inline-flex items-center gap-1 text-editor-textMuted hover:text-editor-textPrimary transition"
+                                    >
+                                        <ExternalLink className="w-3.5 h-3.5" />
+                                        <span>GitHub</span>
+                                    </a>
+                                )}
                             </div>
                         </div>
                     ))}

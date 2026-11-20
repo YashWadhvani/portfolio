@@ -197,9 +197,9 @@ export default function TerminalDrawer({
                                 className="border-l-2 border-syntax-type pl-2"
                             >
                                 <a
-                                    href={proj.html_url}
-                                    target="_blank"
-                                    rel="noreferrer"
+                                    href={proj.html_url || `/projects/${proj.name}`}
+                                    target={proj.html_url ? "_blank" : undefined}
+                                    rel={proj.html_url ? "noreferrer" : undefined}
                                     className="text-syntax-type font-bold hover:underline"
                                 >
                                     {proj.title} ({proj.language})

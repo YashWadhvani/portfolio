@@ -110,6 +110,7 @@ export async function getPresence() {
         app: "Spotify",
         detail: `Listening to ${spotify.title} by ${spotify.artist}`,
         icon: "🎵",
+          iconUrl: "https://cdn.simpleicons.org/spotify/1DB954",
         source: "spotify" as const,
       },
       spotify,

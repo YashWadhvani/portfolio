@@ -110,7 +110,7 @@ export default function ProjectsPage() {
                     <div className="flex items-center gap-2 text-xs font-code text-syntax-type">
                         <FolderGit2 className="w-4 h-4" />
                         <span>
-                            ALL_REPOSITORIES.JSON ({projects.length} Total)
+                            PROJECTS.JSON ({projects.length} Total)
                         </span>
                     </div>
 
@@ -322,15 +322,22 @@ export default function ProjectsPage() {
                                         </a>
                                     )}
 
-                                    <a
-                                        href={project.html_url}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="inline-flex items-center gap-1 text-editor-textMuted hover:text-editor-textPrimary transition"
-                                    >
-                                        <ExternalLink className="w-3.5 h-3.5" />
-                                        <span>GitHub</span>
-                                    </a>
+                                    {project.html_url && (
+                                        <a
+                                            href={project.html_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="inline-flex items-center gap-1 text-editor-textMuted hover:text-editor-textPrimary transition"
+                                        >
+                                            <ExternalLink className="w-3.5 h-3.5" />
+                                            <span>
+                                                {project.repositories &&
+                                                project.repositories.length > 1
+                                                    ? `${project.repositories.length} repos`
+                                                    : "GitHub"}
+                                            </span>
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </div>

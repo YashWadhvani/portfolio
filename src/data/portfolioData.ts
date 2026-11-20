@@ -8,13 +8,26 @@ export interface ProjectItem {
   topics: string[];
   stars: number;
   forks: number;
-  html_url: string;
+  html_url?: string;
   homepage?: string;
   demoUrl?: string;
   screenshot?: string;
   impact?: string[];
+  readme?: string;
   featured?: boolean;
   category: "Full Stack" | "Mobile App" | "Frontend" | "Backend" | "AI/ML" | "Systems";
+  projectId?: string;
+  repositories?: ProjectRepository[];
+  manual?: boolean;
+}
+
+export interface ProjectRepository {
+  name: string;
+  url: string;
+  label?: string;
+  language?: string;
+  stars?: number;
+  forks?: number;
 }
 
 export interface SkillCategory {
@@ -465,7 +478,7 @@ export const LEADERSHIP: LeadershipItem[] = [
   },
 ];
 
-export const ALL_REPOSITORIES: ProjectItem[] = [
+const REPOSITORY_PROJECTS: ProjectItem[] = [
   {
     id: "code_snippet_library",
     name: "code_snippet_library",
@@ -651,6 +664,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "saferoute-backend",
+    projectId: "saferoute",
     name: "saferoute-backend",
     title: "SafeRoute Backend API",
     description: "Spatial navigation and route hazard scoring backend services.",
@@ -664,6 +678,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "saferoute_frontend",
+    projectId: "saferoute",
     name: "saferoute_frontend",
     title: "SafeRoute Mobile App",
     description: "Flutter mobile application for emergency SOS alerts and safe route navigation.",
@@ -692,6 +707,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "constructify-frontend",
+    projectId: "constructify",
     name: "constructify-frontend",
     title: "Constructify Construction ERP",
     description: "Frontend dashboard for construction project milestones, vendors, and materials.",
@@ -705,6 +721,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "constructify-backend",
+    projectId: "constructify",
     name: "constructify-backend",
     title: "Constructify Backend API",
     description: "Node.js backend powering site data, material procurement, and user auth.",
@@ -731,6 +748,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "NeoBin_FrontEnd",
+    projectId: "neobin",
     name: "NeoBin_FrontEnd",
     title: "NeoBin Smart Waste Frontend",
     description: "IoT garbage fill-level visualization and waste truck route planning dashboard.",
@@ -744,6 +762,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "NeoBin_BackEnd",
+    projectId: "neobin",
     name: "NeoBin_BackEnd",
     title: "NeoBin Smart Waste Backend",
     description: "Telemetry ingestion API for municipal ultrasonic smart bin sensors.",
@@ -757,6 +776,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "real-time-metal-rates-front-end",
+    projectId: "real-time-metal-rates",
     name: "real-time-metal-rates-front-end",
     title: "Real Time Metal Rates Frontend",
     description: "Gold and silver spot market pricing ticker and interactive charts.",
@@ -770,6 +790,7 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
   },
   {
     id: "real-time-metal-rates-back-end",
+    projectId: "real-time-metal-rates",
     name: "real-time-metal-rates-back-end",
     title: "Real Time Metal Rates Backend",
     description: "Financial WebSocket and REST scraper for live commodity metal spot quotes.",
@@ -794,4 +815,73 @@ export const ALL_REPOSITORIES: ProjectItem[] = [
     featured: false,
     category: "Frontend",
   },
+];
+
+/**
+ * Add non-GitHub work here. A project may also list repository links when its
+ * frontend, backend, and other parts live in separate repositories.
+ */
+export const MANUAL_PROJECTS: ProjectItem[] = [];
+
+const PROJECT_GROUP_TITLES: Record<string, string> = {
+  saferoute: "SafeRoute",
+  constructify: "Constructify Construction ERP",
+  neobin: "NeoBin Smart Waste Management",
+  "real-time-metal-rates": "Real-Time Metal Rates",
+};
+
+function toRepository(project: ProjectItem): ProjectRepository {
+  return {
+    name: project.name,
+    url: project.html_url || `https://github.com/YashWadhvani/${project.name}`,
+    language: project.language,
+    stars: project.stars,
+    forks: project.forks,
+  };
+}
+
+function groupRepositoryProjects(projects: ProjectItem[]): ProjectItem[] {
+  const grouped = new Map<string, ProjectItem[]>();
+  const order: string[] = [];
+
+  for (const project of projects) {
+    const key = project.projectId || project.id;
+    if (!grouped.has(key)) {
+      grouped.set(key, []);
+      order.push(key);
+    }
+    grouped.get(key)?.push(project);
+  }
+
+  return order.map((key) => {
+    const entries = grouped.get(key) || [];
+    const primary = entries[0];
+    if (entries.length === 1 && !primary.projectId) {
+      return {
+        ...primary,
+        repositories: primary.html_url ? [toRepository(primary)] : undefined,
+      };
+    }
+
+    return {
+      ...primary,
+      id: key,
+      name: key,
+      title: PROJECT_GROUP_TITLES[key] || primary.title,
+      description: primary.description,
+      language: entries.every((entry) => entry.language === primary.language)
+        ? primary.language
+        : "Multiple",
+      stars: entries.reduce((total, entry) => total + entry.stars, 0),
+      forks: entries.reduce((total, entry) => total + entry.forks, 0),
+      topics: Array.from(new Set(entries.flatMap((entry) => entry.topics))),
+      html_url: primary.html_url,
+      repositories: entries.map(toRepository),
+    };
+  });
+}
+
+export const ALL_REPOSITORIES: ProjectItem[] = [
+  ...groupRepositoryProjects(REPOSITORY_PROJECTS),
+  ...MANUAL_PROJECTS,
 ];

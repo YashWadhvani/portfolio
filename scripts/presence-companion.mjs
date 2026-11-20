@@ -19,13 +19,29 @@ function loadLocalEnv() {
 
 loadLocalEnv();
 
-const endpoint = process.env.PRESENCE_URL || "http://localhost:3000/api/presence/publish";
+function normalizeValue(value) {
+    return String(value || "")
+        .trim()
+        .replace(/^("|')(.*)\1$/, "$2")
+        .trim();
+}
+
+const endpoint = normalizeValue(
+    process.env.PRESENCE_URL || "http://localhost:3000/api/presence/publish",
+);
 const token = String(process.env.PRESENCE_PUBLISH_TOKEN || "")
     .trim()
     .replace(/^("|')(.*)\1$/, "$2");
 const intervalMs = Number(process.env.PRESENCE_INTERVAL_MS || 5000);
 const configPath = path.resolve(process.cwd(), "scripts", "presence-apps.json");
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+
+try {
+    new URL(endpoint);
+} catch {
+    console.error(`[presence] Invalid PRESENCE_URL: ${endpoint}`);
+    process.exit(1);
+}
 
 if (!token) {
     console.error("Missing PRESENCE_PUBLISH_TOKEN. Set it before starting the companion.");
@@ -108,7 +124,14 @@ async function publish(activity) {
             }
             return;
         } catch (error) {
-            if (attempt === 2) throw error;
+            if (attempt === 2) {
+                const cause = error?.cause instanceof Error
+                    ? ` (${error.cause.message})`
+                    : error?.cause
+                        ? ` (${String(error.cause)})`
+                        : "";
+                throw new Error(`${error instanceof Error ? error.message : String(error)}${cause}`);
+            }
             await new Promise((resolve) => setTimeout(resolve, 1000));
         } finally {
             clearTimeout(timeout);

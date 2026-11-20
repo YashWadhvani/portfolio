@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import ReactMarkdown, { Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -12,14 +15,17 @@ import {
     Check,
     Layers,
     Terminal,
+    BookOpen,
 } from "lucide-react";
-import { ALL_REPOSITORIES } from "@/data/portfolioData";
+import { ALL_REPOSITORIES, ProjectRepository } from "@/data/portfolioData";
 
 export default function ProjectDetailPage() {
     const params = useParams();
     const id = (params?.id as string) || "";
     const [repo, setRepo] = useState<any>(null);
-    const [copied, setCopied] = useState(false);
+    const [copiedRepository, setCopiedRepository] = useState<string | null>(
+        null,
+    );
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -72,11 +78,57 @@ export default function ProjectDetailPage() {
         if (id) fetchRepoDetails();
     }, [id]);
 
-    const copyCloneCommand = () => {
-        const cmd = `git clone https://github.com/YashWadhvani/${id}.git`;
+    const repositories: ProjectRepository[] = repo?.repositories || [];
+    const readmeRepositoryUrl =
+        repo?.html_url || repositories[0]?.url || "";
+    const readmeBranch = repo?.default_branch || "main";
+
+    const resolveReadmeUrl = (value: string, raw = false) => {
+        if (/^(https?:|mailto:|tel:|#)/i.test(value)) return value;
+        if (!readmeRepositoryUrl) return value;
+
+        const baseUrl = `${readmeRepositoryUrl}/${raw ? "raw" : "blob"}/${readmeBranch}/`;
+        try {
+            return new URL(value, baseUrl).toString();
+        } catch {
+            return "#";
+        }
+    };
+
+    const markdownComponents: Components = {
+        a: ({ href, children, ...props }) => {
+            const resolvedHref = href ? resolveReadmeUrl(href) : undefined;
+            const isInternalAnchor = href?.startsWith("#");
+
+            return (
+                <a
+                    {...props}
+                    href={resolvedHref}
+                    target={isInternalAnchor ? undefined : "_blank"}
+                    rel={isInternalAnchor ? undefined : "noreferrer"}
+                >
+                    {children}
+                </a>
+            );
+        },
+        img: ({ src, alt, ...props }) => (
+            <img
+                {...props}
+                src={src ? resolveReadmeUrl(src, true) : undefined}
+                alt={alt || ""}
+                loading="lazy"
+            />
+        ),
+    };
+
+    const getCloneCommand = (repositoryUrl: string) =>
+        `git clone ${repositoryUrl.endsWith(".git") ? repositoryUrl : `${repositoryUrl}.git`}`;
+
+    const copyCloneCommand = (repository: ProjectRepository) => {
+        const cmd = getCloneCommand(repository.url);
         navigator.clipboard.writeText(cmd);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setCopiedRepository(repository.name);
+        setTimeout(() => setCopiedRepository(null), 2000);
     };
 
     if (loading) {
@@ -121,16 +173,6 @@ export default function ProjectDetailPage() {
                     </div>
 
                     <div className="flex items-center gap-2.5">
-                        <a
-                            href={repo.html_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded bg-editor-cardElevated hover:bg-editor-hover text-xs font-code text-editor-textPrimary border border-editor-border transition"
-                        >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>GitHub</span>
-                        </a>
-
                         {(repo.demoUrl || repo.homepage) && (
                             <a
                                 href={repo.demoUrl || repo.homepage}
@@ -169,38 +211,69 @@ export default function ProjectDetailPage() {
                     </div>
                 )}
 
-                {/* Clone Command Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded bg-editor-bg border border-editor-border font-code text-xs text-editor-textMuted">
-                    <div className="flex items-start gap-2 min-w-0">
-                        <Terminal className="w-4 h-4 text-syntax-type flex-shrink-0" />
-                        <span className="text-editor-textMuted select-none">
-                            $
-                        </span>
-                        <span className="text-editor-textPrimary break-all">
-                            git clone https://github.com/YashWadhvani/
-                            {repo.name}.git
-                        </span>
+                {/* Repository links */}
+                {repositories.length > 0 && (
+                    <div className="space-y-2">
+                        <h3 className="text-xs font-code text-editor-textMuted">
+                            Project repositories
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                            {repositories.map((repository) => (
+                                <a
+                                    key={repository.name}
+                                    href={repository.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-editor-bg border border-editor-border text-xs font-code text-syntax-storage hover:text-syntax-variable"
+                                >
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                    {repository.label || repository.name}
+                                </a>
+                            ))}
+                        </div>
                     </div>
+                )}
 
-                    <button
-                        onClick={copyCloneCommand}
-                        className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary text-[11px] transition sm:ml-3 self-end sm:self-auto flex-shrink-0 border border-editor-border cursor-pointer"
-                    >
-                        {copied ? (
-                            <>
-                                <Check className="w-3.5 h-3.5 text-syntax-type" />
-                                <span className="text-syntax-type">
-                                    Copied!
-                                </span>
-                            </>
-                        ) : (
-                            <>
-                                <Copy className="w-3.5 h-3.5" />
-                                <span>Copy</span>
-                            </>
-                        )}
-                    </button>
-                </div>
+                {/* Clone Command Bar */}
+                {repositories.length > 0 && (
+                    <div className="space-y-2">
+                        {repositories.map((repository) => (
+                            <div
+                                key={repository.name}
+                                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded bg-editor-bg border border-editor-border font-code text-xs text-editor-textMuted"
+                            >
+                                <div className="flex items-start gap-2 min-w-0">
+                                    <Terminal className="w-4 h-4 text-syntax-type flex-shrink-0" />
+                                    <span className="text-editor-textMuted select-none">
+                                        $
+                                    </span>
+                                    <span className="text-editor-textPrimary break-all">
+                                        {getCloneCommand(repository.url)}
+                                    </span>
+                                </div>
+
+                                <button
+                                    onClick={() => copyCloneCommand(repository)}
+                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-editor-card hover:bg-editor-hover text-editor-textSecondary text-[11px] transition sm:ml-3 self-end sm:self-auto flex-shrink-0 border border-editor-border cursor-pointer"
+                                >
+                                    {copiedRepository === repository.name ? (
+                                        <>
+                                            <Check className="w-3.5 h-3.5 text-syntax-type" />
+                                            <span className="text-syntax-type">
+                                                Copied!
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy className="w-3.5 h-3.5" />
+                                            <span>Copy</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 {/* Badges / Metrics */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs font-code">
@@ -235,6 +308,24 @@ export default function ProjectDetailPage() {
                     </div>
                 </div>
             </div>
+
+            {repo.readme && (
+                <section className="space-y-4">
+                    <h2 className="flex items-center gap-2 text-base font-bold text-editor-textHeading font-sans">
+                        <BookOpen className="w-4 h-4 text-syntax-storage" />
+                        <span>Project Documentation</span>
+                    </h2>
+                    <article className="rounded-lg border border-editor-border bg-editor-card p-5 sm:p-8 text-sm leading-7 text-editor-textSecondary font-sans shadow-vscode [&_h1]:mb-5 [&_h1]:border-b [&_h1]:border-editor-border [&_h1]:pb-4 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-editor-textHeading [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:border-b [&_h2]:border-editor-border [&_h2]:pb-2 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-editor-textHeading [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-editor-textHeading [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-1 [&_a]:font-medium [&_a]:text-syntax-storage [&_a]:underline [&_blockquote]:my-4 [&_blockquote]:border-l-4 [&_blockquote]:border-syntax-storage [&_blockquote]:rounded-r [&_blockquote]:bg-editor-bg [&_blockquote]:px-4 [&_blockquote]:py-2 [&_code]:rounded [&_code]:bg-editor-bg [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-code [&_pre]:my-4 [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-editor-border [&_pre]:bg-editor-bg [&_pre]:p-4 [&_pre]:font-code [&_table]:my-4 [&_table]:w-full [&_table]:table-fixed [&_th]:break-words [&_th]:border [&_th]:border-editor-border [&_th]:bg-editor-bg [&_th]:p-2 [&_td]:break-words [&_td]:border [&_td]:border-editor-border [&_td]:p-2 [&_hr]:my-6 [&_hr]:border-editor-border [&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-lg">
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeSlug]}
+                            components={markdownComponents}
+                        >
+                            {repo.readme}
+                        </ReactMarkdown>
+                    </article>
+                </section>
+            )}
 
             {/* Technologies & Topics */}
             <section className="space-y-3">
